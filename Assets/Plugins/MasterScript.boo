@@ -38,7 +38,7 @@ public class MasterScript (MonoBehaviour):
 		if (GameObject.FindObjectsOfType(GetType()).Length > 1):
 			Destroy(self)		
 		timer = 120
-		Screen.showCursor = false;
+		Cursor.visible = false;
 			
 	def Update():
 		//timer -= Time.deltaTime
@@ -81,7 +81,7 @@ public class MasterScript (MonoBehaviour):
 			##has to be +1 because of the floorremaining logic at the bottom	
 			floorsRemaining = len(TravelFloors)+1
 			hallFrame = GameObject.Find("ElevHallFrame")	
-			hallFrame.collider.isTrigger = false;
+			hallFrame.GetComponent[of Collider]().isTrigger = false;
 			globalTime += levelTimer
 			levelTimer = 0
 			Debug.Log(timer)
@@ -94,7 +94,7 @@ public class MasterScript (MonoBehaviour):
 			canExit = false			
 			Application.LoadLevel(TravelFloors[tFloors-floorsRemaining] as string)
 			hallFrame = GameObject.Find("ElevHallFrame")
-			hallFrame.collider.isTrigger = false;
+			hallFrame.GetComponent[of Collider]().isTrigger = false;
 			globalTime += levelTimer
 			levelTimer = 0
 			DelayTimer = 10.0
@@ -111,10 +111,10 @@ public class MasterScript (MonoBehaviour):
 		SpawnInElevator = 1
 	def playElevatorMusic():
 		Debug.Log("~~playing~~")
-		audio.Play()
+		GetComponent[of AudioSource]().Play()
 	def stopElevatorMusic():
 		Debug.Log("~~stoping~~")
-		audio.Stop()
+		GetComponent[of AudioSource]().Stop()
 	
 	//Returns the user state; might be useful in the future		
 	def getState():

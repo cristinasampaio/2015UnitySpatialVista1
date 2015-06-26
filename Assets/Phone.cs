@@ -11,12 +11,12 @@ public class Phone : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (audio.isPlaying == true) {
-			audio.Stop();
+		if (GetComponent<AudioSource>().isPlaying == true) {
+			GetComponent<AudioSource>().Stop();
 		}
 	}
 	public void ring(){
-		audio.clip = phone;
-		audio.Play ();
+		GetComponent<AudioSource>().clip = phone;
+		GetComponent<AudioSource>().Play ();
 	}
 }

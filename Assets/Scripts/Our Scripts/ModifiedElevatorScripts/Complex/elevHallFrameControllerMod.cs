@@ -17,24 +17,24 @@ public class SimpleHallFrame : MonoBehaviour {
 		//GRAB ELEVATOR REF
 		elevator = GameObject.Find("ElevatorPREFAB").transform.GetComponent<elevControlMod>();
 		//SET ANIMATION CLIPS
-		openAnim = transform.animation.GetClip( "OpenDoors" );
-		closeAnim = transform.animation.GetClip( "CloseDoors" );	
+		openAnim = transform.GetComponent<Animation>().GetClip( "OpenDoors" );
+		closeAnim = transform.GetComponent<Animation>().GetClip( "CloseDoors" );	
 	}
 
 	/// <summary>
 	/// Opens the Hall Frame Doors.
 	/// </summary>
 	public void OpenDoor(){
-		transform.animation.clip = openAnim;
-		transform.animation.Play();
+		transform.GetComponent<Animation>().clip = openAnim;
+		transform.GetComponent<Animation>().Play();
 	}
 
 	/// <summary>
 	/// Closes the Hall Frame Door.
 	/// </summary>
 	public void CloseDoor(){
-		transform.animation.clip = closeAnim;
-		transform.animation.Play();
+		transform.GetComponent<Animation>().clip = closeAnim;
+		transform.GetComponent<Animation>().Play();
 	}
 
 	/// <summary>
@@ -42,9 +42,9 @@ public class SimpleHallFrame : MonoBehaviour {
 	public void CallButtonLight( bool turnOn ){
 		//CHANGE BUTTON OBJECT MATERIAL
 		if( turnOn )	
-			callButtonLight.renderer.material = elevator.buttonOnMat;
+			callButtonLight.GetComponent<Renderer>().material = elevator.buttonOnMat;
 		else
-			callButtonLight.renderer.material  = elevator.buttonOffMat;
+			callButtonLight.GetComponent<Renderer>().material  = elevator.buttonOffMat;
 	}
 
 	public void CallElevator(){

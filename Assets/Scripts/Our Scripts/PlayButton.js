@@ -16,16 +16,16 @@ function Start () {
  	var h = .137*Screen.height;
  	var x = (Screen.width-w)/2;
  	var y = (Screen.height)/2;
-	guiTexture.pixelInset = Rect (x, y, w, h);
-	Debug.Log(guiTexture.pixelInset);
+	GetComponent.<GUITexture>().pixelInset = Rect (x, y, w, h);
+	Debug.Log(GetComponent.<GUITexture>().pixelInset);
 	Debug.Log(Screen.width+":"+Screen.height);
 }
 
 function OnMouseEnter() {
-	guiTexture.texture = playHover;
+	GetComponent.<GUITexture>().texture = playHover;
 }
 function OnMouseExit() {
-	guiTexture.texture = playNormal;
+	GetComponent.<GUITexture>().texture = playNormal;
 }
 function OnMouseDown() {
 	Instantiate(login, Vector3(0, 0, 0),Quaternion.identity);

@@ -14,7 +14,7 @@ class Login (MonoBehaviour):
 		h = .137*Screen.height
 		x = (Screen.width-w)/2
 		y = (Screen.height/2)-(1.4*h)
-		guiTexture.pixelInset = Rect (x, y, w, h)
+		GetComponent[of GUITexture]().pixelInset = Rect (x, y, w, h)
 		
 	def OnGUI() as void:
 		mystyle.fontSize = 20
@@ -28,14 +28,14 @@ class Login (MonoBehaviour):
 		gender = GUI.TextField(Rect(xcenter-100, ycenter+10, 200, 20), gender, 25)
 
 	def OnMouseEnter() as void:
-		guiTexture.texture = playHover
+		GetComponent[of GUITexture]().texture = playHover
 
 	def OnMouseExit() as void:
-		guiTexture.texture = playNormal
+		GetComponent[of GUITexture]().texture = playNormal
 
 	def OnMouseDown() as void:
 		saveCSV()
-		Application.LoadLevel("testingtutorial")
+		Application.LoadLevel("Tutorial")
 					
 	//This runs when first playing
 	def saveCSV ():
@@ -56,4 +56,3 @@ class Login (MonoBehaviour):
 				myfile.Write(output)
 		except e:
 			Debug.Log("There was an error in writing this object to data.scv")
-		myfile.Close()

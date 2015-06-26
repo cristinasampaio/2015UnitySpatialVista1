@@ -6,16 +6,16 @@ function Start () {
  	var h = .137*Screen.height;
  	var x = (Screen.width-w)/2;
  	var y = (Screen.height/2)-h;
-	guiTexture.pixelInset = Rect (x, y, w, h);
-	Debug.Log(guiTexture.pixelInset);
+	GetComponent.<GUITexture>().pixelInset = Rect (x, y, w, h);
+	Debug.Log(GetComponent.<GUITexture>().pixelInset);
 	Debug.Log(Screen.width+":"+Screen.height);
 }
 
 function OnMouseEnter() {
-	guiTexture.texture = exitHover;
+	GetComponent.<GUITexture>().texture = exitHover;
 }
 function OnMouseExit() {
-	guiTexture.texture = exitNormal;
+	GetComponent.<GUITexture>().texture = exitNormal;
 }
 function OnMouseDown() {
 	Application.Quit();

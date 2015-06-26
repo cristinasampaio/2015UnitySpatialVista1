@@ -61,20 +61,20 @@ class PlayerBehavior (MonoBehaviour):
 					if(obj != hit1.collider.gameObject):
 						tempShader = normalShader
 						normalShader = []
-						for mat in hit1.collider.gameObject.renderer.materials:
+						for mat in hit1.collider.gameObject.GetComponent[of Renderer]().materials:
 							try:
 								normalShader.Add(mat.shader)
 							except:
 								pass
 						if(hasObject == false):
-							for mat in hit1.collider.gameObject.renderer.materials:
+							for mat in hit1.collider.gameObject.GetComponent[of Renderer]().materials:
 								try:
 									mat.shader = highlightShader
 								except:
 									pass
 					if(obj != null and obj != hit1.collider.gameObject):
 						i = 0
-						for mat in obj.renderer.materials:
+						for mat in obj.GetComponent[of Renderer]().materials:
 							try:
 								mat.shader = tempShader[i]
 							except:
@@ -83,7 +83,7 @@ class PlayerBehavior (MonoBehaviour):
 					obj = hit1.collider.gameObject
 				elif(obj != null):
 					i = 0
-					for mat in obj.renderer.materials:
+					for mat in obj.GetComponent[of Renderer]().materials:
 						try:
 							mat.shader = normalShader[i]
 						except:
@@ -92,7 +92,7 @@ class PlayerBehavior (MonoBehaviour):
 					obj = null		
 			elif(obj != null):
 				i = 0
-				for mat in obj.renderer.materials:
+				for mat in obj.GetComponent[of Renderer]().materials:
 					try:
 						mat.shader = normalShader[i]
 					except:
@@ -125,15 +125,15 @@ class PlayerBehavior (MonoBehaviour):
 								currObject = hit.transform.gameObject
 								for col in currObject.GetComponents[of Collider]():
 									col.enabled = false
-								currObject.rigidbody.useGravity = false
-								currObject.rigidbody.constraints = RigidbodyConstraints.FreezeAll
-								currObject.rigidbody.constraints &= ~RigidbodyConstraints.FreezePositionY
+								currObject.GetComponent[of Rigidbody]().useGravity = false
+								currObject.GetComponent[of Rigidbody]().constraints = RigidbodyConstraints.FreezeAll
+								currObject.GetComponent[of Rigidbody]().constraints &= ~RigidbodyConstraints.FreezePositionY
 								currObject.transform.localEulerAngles = currObject.GetComponent[of WriteCoordinates]().startRot
 					else:
 						hasObject = false
 						for col in currObject.GetComponents[of Collider]():
 							col.enabled = true
-						currObject.rigidbody.useGravity = true
+						currObject.GetComponent[of Rigidbody]().useGravity = true
 						currObject.GetComponent[of Rigidbody]().velocity = Vector3(0,-.01,0)
 						currObject.gameObject.GetComponent[of WriteCoordinates]().positionUpdate()
 						if (currObject.gameObject.tag == 'target'):

@@ -28,7 +28,6 @@ class officemaster (MonoBehaviour):
 	public audioLog =[]
 	public color as Color
 	textureColor as Color
-	public endPhase1 = 0;
 	
 	storytext = ["You are an intern in a company called Logale & Jabran and today is your first morning at your job.",
 	"Your phone is ringing",
@@ -66,22 +65,18 @@ class officemaster (MonoBehaviour):
 				storyState += 1
 				audioPlayed = 0
 				updateStory()
-		if (gamemaster.GetComponent[of MasterScript]().getTimer() >= 120 and endPhase1 == 0):
-			display = true
-			toldstory = true
-			endPhase1 = 1
 		
 	def updateStory():
 		if(storyState < 4):
 			toldstory = false
-		elif(storyState == 4 and endPhase1 == 1):
+		elif(storyState == 4 and (GameObject.Find("GameMaster").GetComponent[of MasterScript]().getTimer() >= 120)):
 			toldstory = false		
 		elif(GameObject.Find("GameMaster").GetComponent[of MasterScript]().getState() == 2 and storyState < 8):
 			toldstory = false
 		GameObject.Find("Player").GetComponent[of CharacterController]().enabled = true
 		if(toldstory is false):
-			if(audio.isPlaying == true and audioPlayed == 0):
-					audio.Stop()
+			if(GetComponent[of AudioSource]().isPlaying == true and audioPlayed == 0):
+					GetComponent[of AudioSource]().Stop()
 			if (storyState == 1 or storyState == 2):
 				phoneScript = GameObject.Find("sidePhone")
 				phoneScript.GetComponent[of Phone]().ring()

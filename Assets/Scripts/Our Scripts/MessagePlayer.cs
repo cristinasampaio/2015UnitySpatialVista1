@@ -52,7 +52,7 @@ public class MessagePlayer : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Screen.showCursor = false;
+		Cursor.visible = false;
 		pos = transform.position;
 		manager = GameObject.Find ("GameMaster");
 		manager.GetComponent<MasterScript> ().setTimer (120.0f);
@@ -180,7 +180,7 @@ public class MessagePlayer : MonoBehaviour {
 		/* tutorial objective 1: force player to use WASD and looking controls */
 		case "look_vending":
 			guiDisplayText = "Your first objective is to examine the glowing whiteboard. Press the spacebar to continue.";
-			board.gameObject.renderer.material.shader = highlightShader;
+			board.gameObject.GetComponent<Renderer>().material.shader = highlightShader;
 
 			/* detect whiteboard */
 			ray = Camera.main.ScreenPointToRay(lookVector);
@@ -188,7 +188,7 @@ public class MessagePlayer : MonoBehaviour {
 
 				/* if it's the proper whiteboard advance state */
 				if (hit.collider.name == "Teachers_Board") {
-					board.gameObject.renderer.material.shader = normalShader;
+					board.gameObject.GetComponent<Renderer>().material.shader = normalShader;
 					showGUI = true;
 					playerState = "pickup_task_find";
 					StartCoroutine ("cooldownCountdown");
@@ -197,7 +197,7 @@ public class MessagePlayer : MonoBehaviour {
 		break;
 	
 		case "pickup_task_find":
-			board.gameObject.renderer.material.shader = Shader.Find("Diffuse");
+			board.gameObject.GetComponent<Renderer>().material.shader = Shader.Find("Diffuse");
 			guiDisplayText = "Nice job! One of the students has left their " + gameObject.name+ " near their computer. Please find it. Press the spacebar to continue.";
 
 			/* detect textbook */
@@ -206,7 +206,7 @@ public class MessagePlayer : MonoBehaviour {
 				
 				/* if it's the proper whiteboard advance state */
 				if (hit.collider.gameObject == gameObject) {
-					board.gameObject.renderer.material.shader = normalShader;
+					board.gameObject.GetComponent<Renderer>().material.shader = normalShader;
 					showGUI = true;
 					playerState = "pickup_task_retrieve";
 					StartCoroutine ("cooldownCountdown");
@@ -228,11 +228,11 @@ public class MessagePlayer : MonoBehaviour {
 
 		case "pickup_task_mousewheel":
 			guiDisplayText = "First, let's try using the mouse-wheel to place objects. Scroll the mouse-wheel to move objects closer or farther away. Without moving, please place the can on the glowing table behind you. Press spacebar to continue.";
-			scrollTable.gameObject.renderer.material.shader = highlightShader;	
+			scrollTable.gameObject.GetComponent<Renderer>().material.shader = highlightShader;	
 
 		break;
 		case "pickup_task_drop":
-			scrollTable.gameObject.renderer.material.shader = normalShader;	
+			scrollTable.gameObject.GetComponent<Renderer>().material.shader = normalShader;	
 			if (firstTimeInState) {
 				showGUI = true;
 				guiDisplayText = "Nice work! There is a lost-and-found table near the door. Please go return the " + gameObject.name+ " to the lost and found table by positioning the "+gameObject.name+" over the purple circle and left clicking to drop it. Press spacebar to continue.";
@@ -248,7 +248,7 @@ public class MessagePlayer : MonoBehaviour {
 
 		case "task_end":
 			guiDisplayText = "Thank you! Feel free to play with picking up and dropping objects in the room. When you're ready to begin, please leave through the elevator. Press spacebar to continue.";
-			lostTable.gameObject.renderer.material.shader = normalShader;	
+			lostTable.gameObject.GetComponent<Renderer>().material.shader = normalShader;	
 			playerState = "final";
 			manager.GetComponent<MasterScript> ().setTimer (5.0f);
 		break;	

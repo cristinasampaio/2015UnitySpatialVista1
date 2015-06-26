@@ -80,8 +80,8 @@ class appartmentMaster (MonoBehaviour):
 			Debug.Log("STORYSTATE 4")
 			toldstory = false
 		if(toldstory is false):
-			if(audio.isPlaying == true and audioPlayed == 0):
-					audio.Stop()
+			if(GetComponent[of AudioSource]().isPlaying == true and audioPlayed == 0):
+					GetComponent[of AudioSource]().Stop()
 			
 			
 			/*audio.clip = audioLog[storyState]

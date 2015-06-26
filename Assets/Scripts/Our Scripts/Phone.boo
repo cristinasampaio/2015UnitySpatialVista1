@@ -9,8 +9,8 @@ class Phone (MonoBehaviour):
 	def Update ():
 		pass
 	def ring():
-		if (audio.isPlaying == true) :
-			audio.Stop()
+		if (GetComponent[of AudioSource]().isPlaying == true) :
+			GetComponent[of AudioSource]().Stop()
 		else:		
-			audio.clip = phone;
-			audio.Play ()
+			GetComponent[of AudioSource]().clip = phone;
+			GetComponent[of AudioSource]().Play ()
