@@ -33,11 +33,10 @@ public class crosshair : MonoBehaviour {
 		}
 		transform.localScale = originalScale * distance;
 	}
-
+	
 	//Old regular screen crosshair code.
 	/*public Texture2D crosshairTex;
 	public float crossScale = 2;
-
 	void OnGUI () {
 		if (crosshairTex != null)
 		{
