@@ -115,7 +115,7 @@ class PlayerBehavior (MonoBehaviour):
 							currObject.gameObject.tag = 'Untagged'
 							currObject = null
 			else:
-				if Input.GetMouseButtonDown(0):
+				if Input.GetMouseButtonDown(0) or Input.GetKeyDown(KeyCode.Space):
 					if not hasObject:
 						hit as RaycastHit
 						ray as Ray = Camera.main.ScreenPointToRay(Vector3(Screen.width/2, Screen.height/2, 0))
