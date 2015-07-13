@@ -15,13 +15,13 @@ public class callBtnTriggerMod : MonoBehaviour {
 		if( !elevContrl.isElevMoving ){//&& elevContrl.curFloorLevel !=  hallFrameContrl.floor ){
 			elevContrl.newFloor = hallFrameContrl.floor;
 			elevContrl.useCallBtn = true;
-			hallFrameContrl.callButtonLight.GetComponent<Renderer>().material = elevContrl.buttonSelectorMat;
+			hallFrameContrl.callButtonLight.renderer.material = elevContrl.buttonSelectorMat;
 		}
 	}
 
 	void OnTriggerExit( Collider other ){
 		elevContrl.useCallBtn = false;
 		if( !elevContrl.isElevMoving )
-			hallFrameContrl.callButtonLight.GetComponent<Renderer>().material = elevContrl.buttonOffMat;
+			hallFrameContrl.callButtonLight.renderer.material = elevContrl.buttonOffMat;
 	}
 }

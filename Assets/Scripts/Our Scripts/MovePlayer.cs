@@ -45,14 +45,14 @@ public class MovePlayer : MonoBehaviour {
 			Vector3 Go = new Vector3(0,0,Vertical);
 			moveDirection = Go;
 			
-			float slope = 0.0;
+			float slope = 0.0f;
 			//Check size of character for the 4th parameter
-			if(controller.Raycast(transform.position, Vector3.down, hit, 10)) {
+			/*if(controller.Raycast(transform.position, Vector3.down, hit, 10)) {
 				slope = hit.normal;
-			}
+			}*/
 			
 			moveDirection = transform.TransformDirection(moveDirection);
-			moveDirection += Mathf.sin(slope);
+			//moveDirection += Mathf.sin((double)slope);
 			moveDirection *= speed;
 			
 			/*These if statements set up a system where
