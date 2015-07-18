@@ -35,7 +35,7 @@ class Login (MonoBehaviour):
 
 	def OnMouseDown() as void:
 		saveCSV()
-		Application.LoadLevel("Tutorial")
+		Application.LoadLevel("testingtutorial")
 					
 	//This runs when first playing
 	def saveCSV ():
@@ -56,3 +56,4 @@ class Login (MonoBehaviour):
 				myfile.Write(output)
 		except e:
 			Debug.Log("There was an error in writing this object to data.scv")
+		myfile.Close()

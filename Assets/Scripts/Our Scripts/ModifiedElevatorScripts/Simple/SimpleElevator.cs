@@ -133,6 +133,10 @@ public class SimpleElevator: MonoBehaviour {
 	}
 	//Logic to open/close the door when the player enters.
 	void OnTriggerEnter(Collider other) {
+		if (other.gameObject.tag != "Player") 
+		{
+						return;
+		}
 		Debug.Log (isSet);
 		if (isSet == 0 && (Time.timeSinceLevelLoad > 1.0)) { 
 			inElevator = true;
@@ -153,6 +157,11 @@ public class SimpleElevator: MonoBehaviour {
 	}
 	//Logic to close the door when the player exits the elevator
 	void OnTriggerExit(Collider other) {
+		if (other.gameObject.tag != "Player") 
+		{
+			return;
+		}
+
 		inElevator = false;
 		CloseDoor ();
 		GameObject.Find ("elevBlocker").GetComponent<BoxCollider> ().enabled = true;

@@ -91,8 +91,13 @@ public class MasterScript (MonoBehaviour):
 		else:
 			Debug.Log("going to next floor " + state)
 			
+			GameObject.Find("Fader").GetComponent[of FadeInOut]().FadeOut();
+			
 			canExit = false			
 			Application.LoadLevel(TravelFloors[tFloors-floorsRemaining] as string)
+			
+			GameObject.Find("Fader").GetComponent[of FadeInOut]().FadeIn();
+			
 			hallFrame = GameObject.Find("ElevHallFrame")
 			hallFrame.GetComponent[of Collider]().isTrigger = false;
 			globalTime += levelTimer

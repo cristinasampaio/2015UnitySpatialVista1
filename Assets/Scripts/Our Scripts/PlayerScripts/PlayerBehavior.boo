@@ -56,6 +56,7 @@ class PlayerBehavior (MonoBehaviour):
 			hit1 as RaycastHit
 			ray2 as Ray =  Camera.main.ScreenPointToRay(Vector3(Screen.width/2, Screen.height/2, 0))
 		
+			#Code for highlighting objects that can be picked up.
 			if (Physics.Raycast(ray2, hit1, pickupDistance)):
 				if hit1.collider.gameObject.tag == 'target' or hit1.collider.gameObject.tag == 'nontarget':
 					if(obj != hit1.collider.gameObject):
@@ -102,7 +103,7 @@ class PlayerBehavior (MonoBehaviour):
 		
 
 			if showConfidenceGui:
-				if(Input.GetKeyDown(KeyCode.Backspace)):
+				if(Input.GetKeyDown(KeyCode.Backspace) or Input.GetButtonDown("Fire2")):
 						showConfidenceGui = false
 				else:
 					for i in range(1,8):#Bad way to do this, rewrite later.
@@ -115,7 +116,7 @@ class PlayerBehavior (MonoBehaviour):
 							currObject.gameObject.tag = 'Untagged'
 							currObject = null
 			else:
-				if Input.GetMouseButtonDown(0) or Input.GetKeyDown(KeyCode.Space):
+				if Input.GetMouseButtonDown(0) or Input.GetButtonDown("Fire1"):
 					if not hasObject:
 						hit as RaycastHit
 						ray as Ray = Camera.main.ScreenPointToRay(Vector3(Screen.width/2, Screen.height/2, 0))
@@ -145,12 +146,13 @@ class PlayerBehavior (MonoBehaviour):
 				if hasObject:
 					currObject.transform.position = Camera.main.ScreenToWorldPoint(Vector3(Screen.width/2, Screen.height/2, (Camera.main.nearClipPlane+dop)))
 
-					if Input.GetAxis("Mouse ScrollWheel"):
-						sign = Input.GetAxis("Mouse ScrollWheel");
-						if (sign > 0 and dop < 3.0 * gameObject.transform.localScale.y):
-							dop += .5
-						elif (sign < 0 and dop > 0.5 * gameObject.transform.localScale.y):
-							dop -= .5
+					if Input.GetAxis("Mouse ScrollWheel") or Input.GetAxis("RightStickVertical"):
+						sign = Input.GetAxis("Mouse ScrollWheel") or -Input.GetAxis("RightStickVertical");
+						//Debug.Log(sign);
+						if (sign > 0.05 and dop < 3.0 * gameObject.transform.localScale.y):
+							dop += .03
+						elif (sign < -0.05 and dop > 0.5 * gameObject.transform.localScale.y):
+							dop -= .03
 							
 	#Will just Exit the game for now, should be changed later.
 	#Maybe Reset to scene 1? Perhaps say YOU WIN(even if you don't)

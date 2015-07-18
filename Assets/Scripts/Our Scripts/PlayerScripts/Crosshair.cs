@@ -3,7 +3,7 @@ using System.Collections;
 
 /*Thank you to eVRydayVR and his reticle tutorial on youtube*/
 
-public class crosshair : MonoBehaviour {
+public class Crosshair : MonoBehaviour {
 	//New Oculus Crosshair code
 	public Camera CameraFacing;
 	private Vector3 originalScale;

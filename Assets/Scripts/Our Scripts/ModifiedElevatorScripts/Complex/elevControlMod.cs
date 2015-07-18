@@ -73,26 +73,26 @@ public class elevControlMod : MonoBehaviour {
 		texturesList = texturesList.OrderBy( Texture=>Texture.name ).ToList();
 
 		//SET ANIMATION CLIPS
-		openAnim = transform.animation.GetClip( "OpenDoors" );
-		closeAnim = transform.animation.GetClip( "CloseDoors" );	
+		openAnim = transform.GetComponent<Animation>().GetClip( "OpenDoors" );
+		closeAnim = transform.GetComponent<Animation>().GetClip( "CloseDoors" );	
 
 		//ASSIGN LED MATERIALS TO ELEVATOR AND HALL FRAMES, THEN SET LED FLOOR DISPLAY & ELEVATOR TO CURRENT FLOOR
 		ledMatsArray = new Material[2];
-		ledMatsArray[0] = ledPanel.renderer.material;
+		ledMatsArray[0] = ledPanel.GetComponent<Renderer>().material;
 		ledMatsArray[1] = ledMat;
-		ledPanel.renderer.materials = ledMatsArray;
-		hallFrame.GetComponent<elevHallFrameControllerMod>().HallLedPanel.renderer.materials = ledMatsArray;
+		ledPanel.GetComponent<Renderer>().materials = ledMatsArray;
+		hallFrame.GetComponent<elevHallFrameControllerMod>().HallLedPanel.GetComponent<Renderer>().materials = ledMatsArray;
 		LEDPanel( curFloorLevel );
 		elevator.position = hallFrame.transform.position;
 
 		//SET DOOR OPEN/CLOSE
 		if ( doorOpen ) {
-			elevator.animation.clip = openAnim;
-			elevator.animation[openAnim.name].time =openAnim.length;
-			elevator.animation.Play();
-			hallFrame.GetComponent<elevHallFrameController>().animation.clip = openAnim;
-			hallFrame.GetComponent<elevHallFrameController>().animation[openAnim.name].time = openAnim.length;
-			hallFrame.GetComponent<elevHallFrameController>().animation.Play();
+			elevator.GetComponent<Animation>().clip = openAnim;
+			elevator.GetComponent<Animation>()[openAnim.name].time =openAnim.length;
+			elevator.GetComponent<Animation>().Play();
+			hallFrame.GetComponent<elevHallFrameController>().GetComponent<Animation>().clip = openAnim;
+			hallFrame.GetComponent<elevHallFrameController>().GetComponent<Animation>()[openAnim.name].time = openAnim.length;
+			hallFrame.GetComponent<elevHallFrameController>().GetComponent<Animation>().Play();
 			}
 		}
 
@@ -123,10 +123,10 @@ public class elevControlMod : MonoBehaviour {
 			newFloor = buttonNum;
 
 		var selectedBtn = buttonLightList[ buttonNum ];
-		var oldMat 		= selectedBtn.renderer.material;
+		var oldMat 		= selectedBtn.GetComponent<Renderer>().material;
 
-		buttonLightList[ prevBtn  ].renderer.material = oldMat;
-		selectedBtn.renderer.material = buttonSelectorMat;
+		buttonLightList[ prevBtn  ].GetComponent<Renderer>().material = oldMat;
+		selectedBtn.GetComponent<Renderer>().material = buttonSelectorMat;
 		prevBtn =  buttonNum ;
 	}
 
@@ -141,9 +141,9 @@ public class elevControlMod : MonoBehaviour {
 			newFloor = curFloorLevel + 1;
 
 		if( turnOn )
-			buttonLightList[ curFloorLevel ].renderer.material = buttonSelectorMat;
+			buttonLightList[ curFloorLevel ].GetComponent<Renderer>().material = buttonSelectorMat;
 		else
-			buttonLightList[ prevBtn ].renderer.material = buttonOffMat;
+			buttonLightList[ prevBtn ].GetComponent<Renderer>().material = buttonOffMat;
 	}
 
 	/// <summary>
@@ -178,9 +178,9 @@ public class elevControlMod : MonoBehaviour {
 	
 		//CHANGE BUTTON OBJECT MATERIAL
 		if( turnOn )
-			buttonLightList[buttonNum].renderer.material = buttonOnMat;
+			buttonLightList[buttonNum].GetComponent<Renderer>().material = buttonOnMat;
 		else
-			buttonLightList[buttonNum].renderer.material = buttonOffMat;
+			buttonLightList[buttonNum].GetComponent<Renderer>().material = buttonOffMat;
 
 	}
 
@@ -189,9 +189,9 @@ public class elevControlMod : MonoBehaviour {
 	/// </summary>
 	void ButtonHelpLight( bool turnOn ){
 		if( turnOn )
-			buttonLightList[19].renderer.material = buttonOnMat;
+			buttonLightList[19].GetComponent<Renderer>().material = buttonOnMat;
 		else
-			buttonLightList[19].renderer.material = buttonOffMat;;
+			buttonLightList[19].GetComponent<Renderer>().material = buttonOffMat;;
 	}
 
 
@@ -200,9 +200,9 @@ public class elevControlMod : MonoBehaviour {
 	/// </summary>
 	void ButtonOpenLight( bool turnOn ){
 		if( turnOn )
-			buttonLightList[20].renderer.material = buttonOnMat;
+			buttonLightList[20].GetComponent<Renderer>().material = buttonOnMat;
 		else
-			buttonLightList[20].renderer.material = buttonOffMat;
+			buttonLightList[20].GetComponent<Renderer>().material = buttonOffMat;
 	}
 
 
@@ -285,8 +285,8 @@ public class elevControlMod : MonoBehaviour {
 	/// Opens the elevator door only.
 	/// </summary>
 	void OpenDoor(){
-		transform.animation.clip = openAnim;
-		transform.animation.Play();
+		transform.GetComponent<Animation>().clip = openAnim;
+		transform.GetComponent<Animation>().Play();
 		doorOpen = true;
 	}
 	/// <summary>
@@ -294,8 +294,8 @@ public class elevControlMod : MonoBehaviour {
 	/// </summary>
 	/// <param name="floor">Floor.</param>
 	void OpenDoor( int floor ){
-		transform.animation.clip = openAnim;
-		transform.animation.Play();
+		transform.GetComponent<Animation>().clip = openAnim;
+		transform.GetComponent<Animation>().Play();
 		hallFrame.GetComponent<elevHallFrameControllerMod>().OpenDoor();
 		doorOpen = true;
 	}
@@ -304,8 +304,8 @@ public class elevControlMod : MonoBehaviour {
 	/// Closes the elevator door only.
 	/// </summary>
 	void CloseDoor(){
-		transform.animation.clip = closeAnim;
-		transform.animation.Play();
+		transform.GetComponent<Animation>().clip = closeAnim;
+		transform.GetComponent<Animation>().Play();
 		doorOpen = false;
 	}
 	/// <summary>
@@ -313,8 +313,8 @@ public class elevControlMod : MonoBehaviour {
 	/// </summary>
 	/// <param name="floor">Floor.</param>
 	void CloseDoor( int floor ){
-		transform.animation.clip = closeAnim;
-		transform.animation.Play();
+		transform.GetComponent<Animation>().clip = closeAnim;
+		transform.GetComponent<Animation>().Play();
 		hallFrame.GetComponent<elevHallFrameControllerMod>().CloseDoor();
 		doorOpen = false;
 	}

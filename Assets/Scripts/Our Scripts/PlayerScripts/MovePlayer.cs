@@ -12,6 +12,7 @@ using System.Collections;
  * Movement should also slow if you are not looking where you are going, slightly at first
  * and then more the longer you look away, or the farther */
 public class MovePlayer : MonoBehaviour {
+
 	private float speed = 20.0f;
 	private float roatationSpeed = 32.0f;
 	private float jumpSpeed = 8.0f;
@@ -19,13 +20,20 @@ public class MovePlayer : MonoBehaviour {
 	private Vector3 moveDirection = Vector3.zero;
 	private float turnDirection = 0.0f;
 	private float turnTime = 0.0f;
-	
 	private RaycastHit hit;
+	private float scale;
 
 	//Make sure character controller is working
 	void Start() {
 		CharacterController controller = GetComponent<CharacterController>();
 		controller.enabled = true;
+		if (Application.loadedLevelName == "Apartment01_2") {
+			scale = .13f;
+		} else if (Application.loadedLevelName == "testingtutorial") {
+			scale = .4f;
+		} else {
+			scale = 1.0f;
+		}
 	}
 
 	/* Update handels all the movement for the character.
@@ -53,7 +61,7 @@ public class MovePlayer : MonoBehaviour {
 			
 			moveDirection = transform.TransformDirection(moveDirection);
 			//moveDirection += Mathf.sin((double)slope);
-			moveDirection *= speed;
+			moveDirection *= speed * scale;
 			
 			/*These if statements set up a system where
 			 * if the character has been turning in a direction
@@ -83,6 +91,11 @@ public class MovePlayer : MonoBehaviour {
 				//turnTime = 0;
 			}*/
 			turnDirection = Horizontal;
+			float rotation = Vector3.Angle(Camera.main.transform.forward, controller.transform.forward);
+			//Debug.Log(rotation + "   " + turnDirection);
+			if (rotation > 20f) {
+				turnDirection *= 2.0f;
+			}
 			turnDirection *=  roatationSpeed;
 
 
