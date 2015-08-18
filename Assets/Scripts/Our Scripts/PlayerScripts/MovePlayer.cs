@@ -41,71 +41,74 @@ public class MovePlayer : MonoBehaviour {
 	 * IF Up or Down, the character will move forward of back.
 	 * IF Left or Right, the character will turn which direction they are "facing" */
 	void Update() {
-		CharacterController controller = GetComponent<CharacterController>();
+		CharacterController controller = GetComponent<CharacterController> ();
 		//Check if the character is on the ground, for jumping if we ever want that.
-		if (controller.isGrounded) {
+		if (controller.enabled = true) {
+	
+			if (controller.isGrounded) {
 
-			//This grabs the direction you are pushing the stick/keys
-			float Horizontal = Input.GetAxis("Horizontal");
-			float Vertical = Input.GetAxis("Vertical");
+				//This grabs the direction you are pushing the stick/keys
+				float Horizontal = Input.GetAxis ("Horizontal");
+				float Vertical = Input.GetAxis ("Vertical");
 
-			//Forward movement is done with a vector.
-			Vector3 Go = new Vector3(0,0,Vertical);
-			moveDirection = Go;
-			
-			float slope = 0.0f;
-			//Check size of character for the 4th parameter
-			/*if(controller.Raycast(transform.position, Vector3.down, hit, 10)) {
-				slope = hit.normal;
-			}*/
-			
-			moveDirection = transform.TransformDirection(moveDirection);
-			//moveDirection += Mathf.sin((double)slope);
-			moveDirection *= speed * scale;
-			
-			/*These if statements set up a system where
-			 * if the character has been turning in a direction
-			 * they turn a bit faster every second*/
-			/*if (turnDirection > 0.0f && Horizontal > 0.0f) {
-				turnTime += Time.deltaTime;
-				if (turnTime > 2 && turnDirection < 20.0f) {
-					turnDirection += turnTime;
-					turnTime -= turnTime;
+				//Forward movement is done with a vector.
+				Vector3 Go = new Vector3 (0, 0, Vertical);
+				moveDirection = Go;
+				
+				float slope = 0.0f;
+				//Check size of character for the 4th parameter
+				/*if(controller.Raycast(transform.position, Vector3.down, hit, 10)) {
+					slope = hit.normal;
+				}*/
+				
+				moveDirection = transform.TransformDirection (moveDirection);
+				//moveDirection += Mathf.sin((double)slope);
+				moveDirection *= speed * scale;
+				
+				/*These if statements set up a system where
+				 * if the character has been turning in a direction
+				 * they turn a bit faster every second*/
+				/*if (turnDirection > 0.0f && Horizontal > 0.0f) {
+					turnTime += Time.deltaTime;
+					if (turnTime > 2 && turnDirection < 20.0f) {
+						turnDirection += turnTime;
+						turnTime -= turnTime;
+					}
+					else {
+						turnDirection = turnDirection;
+					}
+				}
+				else if(turnDirection < 0f && Horizontal < 0f) {
+					turnTime += Time.deltaTime;
+					if (turnTime > 2 && turnDirection > -40.0f) {
+						turnDirection -= turnTime;
+						turnTime -= turnTime;
+					}
+					else {
+						turnDirection = turnDirection;
+					}
 				}
 				else {
-					turnDirection = turnDirection;
-				}
-			}
-			else if(turnDirection < 0f && Horizontal < 0f) {
-				turnTime += Time.deltaTime;
-				if (turnTime > 2 && turnDirection > -40.0f) {
-					turnDirection -= turnTime;
-					turnTime -= turnTime;
-				}
-				else {
-					turnDirection = turnDirection;
-				}
-			}
-			else {
+					turnDirection = Horizontal;
+					//turnTime = 0;
+				}*/
 				turnDirection = Horizontal;
-				//turnTime = 0;
-			}*/
-			turnDirection = Horizontal;
-			float rotation = Vector3.Angle(Camera.main.transform.forward, controller.transform.forward);
-			//Debug.Log(rotation + "   " + turnDirection);
-			if (rotation > 20f) {
-				turnDirection *= 2.0f;
+				float rotation = Vector3.Angle (Camera.main.transform.forward, controller.transform.forward);
+				//Debug.Log(rotation + "   " + turnDirection);
+				if (rotation > 20f) {
+					turnDirection *= 2.0f;
+				}
+				turnDirection *= roatationSpeed;
+
+
+				//The start of jumping if we ever want it.
+				//if (Input.GetButton("Jump"))
+				//moveDirection.y = jumpSpeed;
+				
 			}
-			turnDirection *=  roatationSpeed;
-
-
-			//The start of jumping if we ever want it.
-			//if (Input.GetButton("Jump"))
-			//moveDirection.y = jumpSpeed;
-			
+			moveDirection.y -= gravity * Time.deltaTime;
+			controller.Move (moveDirection * Time.deltaTime);
+			transform.Rotate (0, turnDirection * Time.deltaTime, 0);
 		}
-		moveDirection.y -= gravity * Time.deltaTime;
-		controller.Move(moveDirection * Time.deltaTime);
-		transform.Rotate (0, turnDirection * Time.deltaTime, 0);
 	}
 }

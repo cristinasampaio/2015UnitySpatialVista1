@@ -34,7 +34,7 @@ public class Waypointfollower : MonoBehaviour {
 		if(currentWayPoint >= (wayPoint.Length))
 		{
 
-			player.GetComponent<follow>().enabled = false;
+			//player.GetComponent<follow>().enabled = false;
 
 
 		}
