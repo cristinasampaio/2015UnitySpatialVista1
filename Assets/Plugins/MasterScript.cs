@@ -20,6 +20,7 @@ public class MasterScript : MonoBehaviour {
 	public bool canOpen = false;
 	public int state = 2;
 	public double levelTimer = 0.0;
+	public double doorTimeDelay = 120.0;
 
 	//The private variables
 	private double globalTime = 0.0;
@@ -51,9 +52,9 @@ public class MasterScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		timer += Time.deltaTime;
+		levelTimer += Time.deltaTime;
 
-		if (!canOpen && levelTimer >= timer) {
+		if (!canOpen && levelTimer >= doorTimeDelay) {
 			canOpen = true;
 		}
 
@@ -78,6 +79,7 @@ public class MasterScript : MonoBehaviour {
 				writeInfo(lastFloor, levelTimer);
 				//Since we are moving into the final stage, we don't need the scene anymore.
 				testFloors.RemoveAt(0);
+				floorsRemaining--;
 			}
 			else {
 				if (isTutorial)
@@ -91,7 +93,6 @@ public class MasterScript : MonoBehaviour {
 			hallFrame.GetComponent<Collider>().isTrigger = false;
 			globalTime += levelTimer;
 			levelTimer = 0.0;
-			timer = 120.0;
 		} else {
 			//Debug.Log("Going to next floor " + state);
 			
@@ -109,9 +110,7 @@ public class MasterScript : MonoBehaviour {
 			globalTime += levelTimer;
 			levelTimer = 0.0;
 			delayTimer = 10.0;
-			timer = 120.0;
 		}
-		//floorsRemaining --;
 		isSet = false;
 		canOpen = false;
 	}
@@ -158,7 +157,7 @@ public class MasterScript : MonoBehaviour {
 	}
 
 	public void setTimer(double t) {
-		timer = t;
+		//timer = t;
 	}
 
 	public bool getCanOpen() {

@@ -7,34 +7,62 @@ public class FadeInOut : MonoBehaviour {
 	private float change = 0.1f;
 	private float time = 0.0f;
 	private Material mat;
+	private int fade = 1;
 	
 	// Use this for initialization
 	void Start () {
-		mat = GetComponent<MeshRenderer> ().material;
+		mat = GetComponent<MeshRenderer>().material;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		FadeIn ();
+		if (fade == 1) 
+		{
+			fadeInFunc();
+		}
+
+		if (fade == 2) 
+		{
+			fadeOutFunc();
+		}
+
 	}
 	
 	public void FadeIn() {
+		fade = 1;
+	}
+	
+	public void FadeOut() {
+		fade = 2;
+	}
+
+	private void fadeInFunc()
+	{
 		time += Time.deltaTime;
 		if (time > 0.08f && mat.color.a > 0f) {
 			Color newColor = mat.color;
 			newColor.a -= change;
 			mat.color = newColor;
 			time = 0.0f;
+		} 
+		else 
+		{
+			//fade = 0;
 		}
 	}
-	
-	public void FadeOut() {
+
+	private void fadeOutFunc()
+	{
 		time += Time.deltaTime;
 		if (time > 0.08f && mat.color.a < 1.0f) {
 			Color newColor = mat.color;
 			newColor.a += change;
 			mat.color = newColor;
 			time = 0.0f;
+		}
+		else
+		{
+			//fade = 0;
 		}
 	}
 }
