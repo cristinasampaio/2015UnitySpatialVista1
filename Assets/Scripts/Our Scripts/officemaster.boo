@@ -1,7 +1,9 @@
 ﻿import UnityEngine
 
 class officemaster (MonoBehaviour): 
-
+	
+	public Cam as Camera
+	
 	private lastroom = ""
 	storyState as int
 	toldstory = false
@@ -30,6 +32,9 @@ class officemaster (MonoBehaviour):
 	textureColor as Color
 	public endPhase1 = 0;
 	
+	private wallTxt as GameObject;
+	private Txt as TextMesh;
+	
 	storytext = ["You are an intern in a company called Logale & Jabran and today is your first morning at your job.",
 	"Your phone is ringing",
 	"Welcome! Thank you so much for coming in on such short notice. Please take a tour of the office before all employees arrive: there are four separate rooms for you to explore. Please look around everywhere and examine all small objects.",
@@ -57,6 +62,25 @@ class officemaster (MonoBehaviour):
 		if(audio.isPlaying == false):
 			updateStory()
 		gamemaster = GameObject.Find("GameMaster")
+		
+		//txtBG.GetComponent(MeshFilter).Mesh = Cubemap;
+		wallTxt = GameObject("TextField")
+		wallTxt.AddComponent(TextMesh) 
+		//wallTxt.AddComponent(MeshRenderer); 
+		//meshRender = wallTxt.GetComponent(MeshRenderer); 
+		//material = meshRender.material; 
+		//meshRender.material = Resources.Load("Arial", Material); 
+		//myFont = Resources.Load("Arial",Font);
+		bounds = wallTxt.GetComponent[of Renderer]().bounds;
+		
+		Txt = wallTxt.GetComponent(TextMesh)
+		Txt.anchor = TextAnchor.MiddleCenter
+		Txt.fontSize = 18
+		Txt.color = Color.black
+		
+		wallTxt.transform.position = Cam.transform.position + Cam.transform.rotation * Vector3(0.0f, -10.0f, 40.0f)
+		wallTxt.transform.LookAt(Cam.transform.position)
+		wallTxt.transform.Rotate(0.0f, 180.0f, 0.0f)
 					
 	def Update():
 		if Input.GetKeyDown("space"):
@@ -70,6 +94,8 @@ class officemaster (MonoBehaviour):
 			display = true
 			toldstory = true
 			endPhase1 = 1
+		
+		Txt.text = storytext[storyState].ToString() + "\n" + "<color=#ffffffff>Press SpaceBar to Continue</color>";
 		
 	def updateStory():
 		if(storyState < 4):
@@ -123,7 +149,7 @@ class officemaster (MonoBehaviour):
 		toldstory = false
 		
 			
-	def OnGUI():
+	/*def OnGUI():
 		mystyle.fontSize = Screen.width/60
 		mystyle.wordWrap = true
 		
@@ -138,7 +164,7 @@ class officemaster (MonoBehaviour):
 			#textureColor = guiTexture.color
 			#textureColor.a = .5
 			GUI.Label(Rect(Screen.width*.15,Screen.height*.77,Screen.width*.7,Screen.height*.1), storytext[storyState].ToString(), mystyle)
-			GUI.Label(Rect(Screen.width*.35,Screen.height*.95,Screen.width*.7,Screen.height*.9), "<color=#ffffffff>Press SpaceBar to Continue</color>", mystyle)
+			GUI.Label(Rect(Screen.width*.35,Screen.height*.95,Screen.width*.7,Screen.height*.9), "<color=#ffffffff>Press SpaceBar to Continue</color>", mystyle)*/
 			
 			
 	def TellStory():

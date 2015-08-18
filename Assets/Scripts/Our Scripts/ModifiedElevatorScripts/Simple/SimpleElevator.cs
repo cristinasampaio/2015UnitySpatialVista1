@@ -62,7 +62,7 @@ public class SimpleElevator: MonoBehaviour {
 		elevator.position = hallFrame.transform.position;
 	
 		//Decide if the player is still in the elevator or not
-		if(sn.getSpawnPoint() == 1){
+		if(sn.getSpawnPoint()){
 			Debug.Log(Application.loadedLevelName);
 			player.transform.position = gameObject.transform.position;
 			player.transform.localEulerAngles = transform.localEulerAngles;
