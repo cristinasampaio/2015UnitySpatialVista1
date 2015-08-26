@@ -78,6 +78,7 @@ public class MasterScript : MonoBehaviour {
 				writeInfo(lastFloor, levelTimer);
 				//Since we are moving into the final stage, we don't need the scene anymore.
 				testFloors.RemoveAt(0);
+				floorsRemaining = testFloors.Count;
 			}
 			else {
 				if (isTutorial)
@@ -101,7 +102,7 @@ public class MasterScript : MonoBehaviour {
 			Application.LoadLevel(travelFloors[tFloors-floorsRemaining] as string);
 			tFloors --;
 			
-			GameObject.Find("Fader").GetComponent<FadeInOut>().FadeIn();
+			//GameObject.Find("Fader").GetComponent<FadeInOut>().FadeIn();
 			
 			GameObject hallFrame = GameObject.Find ("ElevHallFrame");
 			hallFrame.GetComponent<Collider>().isTrigger = false;

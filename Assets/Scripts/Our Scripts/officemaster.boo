@@ -8,15 +8,15 @@ class officemaster (MonoBehaviour):
 	storyState as int
 	toldstory = false
 	#storytext as string
-	office = false
+	/*office = false
 	reception = false
-	meeting = false
+	meeting = false*/
 	finalreturn = false
 	display = false
 	inElevator = false
 	public displaytext as Texture
-	public mystyle = GUIStyle()
-	public boxStyle = GUIStyle()
+	//public mystyle = GUIStyle()
+	//public boxStyle = GUIStyle()
 	gamemaster as GameObject
 	public a0 as AudioClip 
 	public a1 as AudioClip 
@@ -101,11 +101,12 @@ class officemaster (MonoBehaviour):
 		if(storyState < 4):
 			toldstory = false
 		elif(storyState == 4 and endPhase1 == 1):
-			toldstory = false		
+			toldstory = false
 		elif(GameObject.Find("GameMaster").GetComponent[of MasterScript]().getState() == 2 and storyState < 8):
 			toldstory = false
 		GameObject.Find("Player").GetComponent[of CharacterController]().enabled = true
 		if(toldstory is false):
+			
 			if(GetComponent[of AudioSource]().isPlaying == true and audioPlayed == 0):
 					GetComponent[of AudioSource]().Stop()
 			if (storyState == 1 or storyState == 2):
@@ -146,27 +147,8 @@ class officemaster (MonoBehaviour):
 		storyState += 1
 		
 	def setToldStory():
-		toldstory = false
+		toldstory = false	
 		
-			
-	/*def OnGUI():
-		mystyle.fontSize = Screen.width/60
-		mystyle.wordWrap = true
-		
-		if(display is true):
-			#color = Color.red
-			color.a = .7
-			#GUI.contentColor = Color.yellow
-			GUI.backgroundColor = color
-			#GUI.color = color
-			#GUI.DrawTexture(Rect(Screen.width*.1,Screen.height*.75,Screen.width*.8,Screen.height*.25), displaytext)
-			GUI.Box(Rect(Screen.width*.1,Screen.height*.75,Screen.width*.8,Screen.height*.25),"",boxStyle)
-			#textureColor = guiTexture.color
-			#textureColor.a = .5
-			GUI.Label(Rect(Screen.width*.15,Screen.height*.77,Screen.width*.7,Screen.height*.1), storytext[storyState].ToString(), mystyle)
-			GUI.Label(Rect(Screen.width*.35,Screen.height*.95,Screen.width*.7,Screen.height*.9), "<color=#ffffffff>Press SpaceBar to Continue</color>", mystyle)*/
-			
-			
 	def TellStory():
 		display = true
 		GameObject.Find("Player").GetComponent[of CharacterController]().enabled = false
