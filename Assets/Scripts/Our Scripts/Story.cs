@@ -81,7 +81,15 @@ public class Story : MonoBehaviour {
 				}
 				else {
 					storyState += 1;
-					DisplayStory (text[storyState], audio[storyState]);
+					try
+					{
+						DisplayStory (text[storyState], audio[storyState]);
+					}
+
+					catch
+					{
+						return;
+					}
 				}
 			}
 		}
@@ -100,6 +108,9 @@ public class Story : MonoBehaviour {
 
 	void DisplayStory(string str, AudioClip ac) {
 		int size = str.Length;
+		if (str.Length == 0) {
+			return;
+		}
 		int spot = 0;
 		string end = "\n Press Space to Continue";
 		string tmpStr = "";
