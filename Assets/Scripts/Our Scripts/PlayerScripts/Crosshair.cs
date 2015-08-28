@@ -11,6 +11,7 @@ public class Crosshair : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		originalScale = transform.localScale;
+		this.CameraFacing = Camera.main;
 	}
 	
 	// Update is called once per frame
@@ -45,4 +46,9 @@ public class Crosshair : MonoBehaviour {
 		else
 			Debug.Log ("No crosshair");
 	}*/
+
+	void OnLevelWasLoaded(int level)
+	{
+		this.CameraFacing = Camera.main;
+	}
 }

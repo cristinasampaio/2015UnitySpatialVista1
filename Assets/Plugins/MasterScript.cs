@@ -14,24 +14,26 @@ public class MasterScript : MonoBehaviour {
 	public bool isSet = false;
 	public bool spawnInElevator = false;
 	public bool isTutorial = true;
-	public double delayTimer = 0.0;
 	public bool canExit = true;
-	public double timer;
 	public bool canOpen = false;
-	public int state = 2;
+	public double timer;
+	public double delayTimer = 0.0;
 	public double levelTimer = 0.0;
 	public double doorTimeDelay = 120.0;
+	public int state = 2;
 
 	//The private variables
 	private double globalTime = 0.0;
 	private string lastFloor = null;
+	private bool fade = false;
 
 	//testFloors are the scenes in which peoples spatial memory will be tested.
 	List<string> testFloors = new List<string>();
-	int floorsRemaining;
+	private int elevFloorsRem;
+	private int elevFloorsMax;
 	//Travel floors are the floors between test floors, they are there to distract the player and little (or nothing) else.
 	List<string> travelFloors = new List<string>();
-	int tFloors;
+	private int testFloorsRem;
 
 
 	// Use this for initialization
@@ -40,17 +42,25 @@ public class MasterScript : MonoBehaviour {
 		testFloors.Add ("Office_Scene");
 		testFloors.Add ("Apartment01_2");
 		//testFloors.Add ("");
-		floorsRemaining = testFloors.Count;
+		testFloorsRem = testFloors.Count;
 
 		//Now add the travelFloors
 		travelFloors.Add ("elescene1");
 		travelFloors.Add ("elescene2");
 		travelFloors.Add ("elescene3");
 		//travelFloors.Add ("");
-		tFloors = travelFloors.Count;
+		elevFloorsRem = travelFloors.Count;
+		elevFloorsMax = travelFloors.Count;
 	}
 	
 	// Update is called once per frame
+	void Awake()
+	{
+		DontDestroyOnLoad (this.gameObject);
+		if (GameObject.FindObjectsOfType (GetType ()).Length > 1)
+			Destroy (this.gameObject);
+	}
+
 	void Update () {
 		levelTimer += Time.deltaTime;
 
@@ -60,59 +70,39 @@ public class MasterScript : MonoBehaviour {
 
 		if (delayTimer > 0.0 && isSet) {
 			delayTimer -= Time.deltaTime;
-		} else if (delayTimer <= 0.0 && isSet) {
+		} 
+
+		if (delayTimer <= 1.0 && isSet && !fade)
+		{
+			GameObject.Find("Fader").GetComponent<FadeInOut>().FadeOut();
+			fade = true;
+			Debug.Log("hi");
+		}
+
+		else if (delayTimer <= 0.0 && isSet) {
 			getNextFloor();
 		}
 	}
 
 	public void getNextFloor() {
-		if (tFloors <= 0) {
-			if(floorsRemaining == 0)
+		if (elevFloorsRem <= 0) {
+			if(testFloorsRem == 0)
 				end();
-			tFloors = travelFloors.Count;
-			canExit = true;
-			if(state == 1) {
-				state = 2;
-				lastFloor = testFloors[0] as string;
-				Application.LoadLevel(lastFloor);
-				//Writes data about floor here.
-				writeInfo(lastFloor, levelTimer);
-				//Since we are moving into the final stage, we don't need the scene anymore.
-				testFloors.RemoveAt(0);
-				floorsRemaining--;
+			else
+			{
+				canExit = true;
+				loadNextTest();
 			}
-			else {
-				if (isTutorial)
-					GameObject.Find("Fader").GetComponent<FadeInOut>().FadeIn();
-					isTutorial = false;
-				Application.LoadLevel(testFloors[0] as string);
-				writeInfo(lastFloor, levelTimer);
-				state = 1;
-			}
-			GameObject hallFrame = GameObject.Find("ElevHallFrame");
-			hallFrame.GetComponent<Collider>().isTrigger = false;
-			globalTime += levelTimer;
-			levelTimer = 0.0;
-		} else {
-			//Debug.Log("Going to next floor " + state);
-			
-			GameObject.Find("Fader").GetComponent<FadeInOut>().FadeOut();
-			
+			elevFloorsRem = elevFloorsMax;
+		}
+		else 
+		{
 			canExit = false;
-			Application.LoadLevel(travelFloors[tFloors-floorsRemaining] as string);
-			tFloors --;
-			
-			GameObject.Find("Fader").GetComponent<FadeInOut>().FadeIn();
-			
-			GameObject hallFrame = GameObject.Find ("ElevHallFrame");
-			hallFrame.GetComponent<Collider>().isTrigger = false;
-			
-			globalTime += levelTimer;
-			levelTimer = 0.0;
-			delayTimer = 10.0;
+			loadNextElevator();
 		}
 		isSet = false;
 		canOpen = false;
+		fade = false;
 	}
 
 	public void goNextFloor() {
@@ -188,5 +178,53 @@ public class MasterScript : MonoBehaviour {
 		}
 			
 		Application.Quit ();
+	}
+
+	public void loadNextTest()
+	{
+		if(state == 1) {
+			state = 2;
+			lastFloor = testFloors[0] as string;
+			Application.LoadLevel(lastFloor);
+			//Writes data about floor here.
+			writeInfo(lastFloor, levelTimer);
+			//Since we are moving into the final stage, we don't need the scene anymore.
+			testFloors.RemoveAt(0);
+			testFloorsRem--;
+		}
+		else {
+			if (isTutorial)
+			{
+				GameObject.Find("Fader").GetComponent<FadeInOut>().FadeIn();
+				isTutorial = false;
+			}
+			Application.LoadLevel(testFloors[0] as string);
+			writeInfo(lastFloor, levelTimer);
+			state = 1;
+		}
+
+		GameObject hallFrame = GameObject.Find("ElevHallFrame");
+		hallFrame.GetComponent<Collider>().isTrigger = false;
+		globalTime += levelTimer;
+		levelTimer = 0.0;
+		doorTimeDelay = 120.0;
+	}
+
+	public void loadNextElevator()
+	{
+		//Debug.Log("Going to next floor " + state);
+
+		Application.LoadLevel(travelFloors[elevFloorsMax-elevFloorsRem] as string);
+		elevFloorsRem--;
+		
+		GameObject.Find("Fader").GetComponent<FadeInOut>().FadeIn();
+		
+		GameObject hallFrame = GameObject.Find ("ElevHallFrame");
+		hallFrame.GetComponent<Collider>().isTrigger = false;
+		
+		globalTime += levelTimer;
+		levelTimer = 0.0;
+		delayTimer = 10.0;
+		doorTimeDelay = 10.0;
 	}
 }
