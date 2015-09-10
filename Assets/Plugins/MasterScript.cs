@@ -114,7 +114,7 @@ public class MasterScript : MonoBehaviour {
 		GetComponent<AudioSource>().Play();
 	}
 	public void stopElevatorMusic() {
-		GetComponent<AudioSource>().Play ();
+		GetComponent<AudioSource> ().Stop ();
 	}
 
 	//Returns the current user state
