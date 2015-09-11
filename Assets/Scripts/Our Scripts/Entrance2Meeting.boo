@@ -19,5 +19,5 @@ class Entrance2Meeting (MonoBehaviour):
 				Application.LoadLevel("office")
 			elif(gameObject.name == "waitdoor2"):
 				Application.LoadLevel("reception_room")
-			GameObject.Find("Office_Master").GetComponent[of officemaster]().Setlastroom()
+		//	GameObject.Find("Office_Master").GetComponent[of officemaster]().Setlastroom()
 			

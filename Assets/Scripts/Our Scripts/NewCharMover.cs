@@ -43,11 +43,14 @@ public class NewCharMover : MonoBehaviour {
 				//float rotation = Vector3.Angle (Camera.main.transform.forward, controller.transform.forward);
 				//if (rotation > 1f) {
 				rotation = Camera.main.transform.eulerAngles.y;
-				if (Mathf.Abs((rotation - this.transform.eulerAngles.y)) > 60.0f && VRDevice.isPresent) {
+				if (Mathf.Abs((rotation - this.transform.eulerAngles.y)) > 60.0f) {
 					Debug.Log (Camera.main.transform.eulerAngles.y);
 					transform.eulerAngles = new Vector3(this.transform.rotation.eulerAngles.x, rotation, this.transform.rotation.eulerAngles.z);
 					//Camera.main.transform.rotation = new Quaternion(Camera.main.transform.rotation.x, 0, Camera.main.transform.rotation.z, Camera.main.transform.rotation.w);
-					InputTracking.Recenter();
+					if(VRDevice.isPresent)
+						InputTracking.Recenter();
+					else
+						Camera.main.transform.localRotation = Quaternion.identity;
 
 				}
 			}
