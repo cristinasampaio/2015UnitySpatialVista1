@@ -1,4 +1,4 @@
-﻿import UnityEngine
+﻿/*import UnityEngine
 
 class officemaster (MonoBehaviour): 
 	
@@ -64,8 +64,8 @@ class officemaster (MonoBehaviour):
 		gamemaster = GameObject.Find("GameMaster")
 		
 		//txtBG.GetComponent(MeshFilter).Mesh = Cubemap;
-		wallTxt = GameObject("TextField")
-		wallTxt.AddComponent(TextMesh) 
+		//wallTxt = GameObject("TextField")
+		//wallTxt.AddComponent(TextMesh) 
 		//wallTxt.AddComponent(MeshRenderer); 
 		//meshRender = wallTxt.GetComponent(MeshRenderer); 
 		//material = meshRender.material; 
@@ -152,4 +152,4 @@ class officemaster (MonoBehaviour):
 	def TellStory():
 		display = true
 		GameObject.Find("Player").GetComponent[of CharacterController]().enabled = false
-		
+		*/

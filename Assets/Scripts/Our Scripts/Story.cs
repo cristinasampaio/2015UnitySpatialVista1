@@ -19,6 +19,8 @@ public class Story : MonoBehaviour {
 	private AudioSource audioSource;
 	private GameObject TxtWall;
 	private TextMesh Txt;
+	private GameObject backgroundCube;
+	private double endOfExploringTime;
 
 	// Use this for initialization
 	void Start () {
@@ -27,9 +29,9 @@ public class Story : MonoBehaviour {
 		//Get Level name, then load text and audio from that folder in resources.
 		string lvlName = Application.loadedLevelName;
 		StreamReader reader = new StreamReader ("Assets/Resources/" + lvlName + "/" + (lvlName + ".txt"));
-		try 
+		try
 		{
-			do 
+			do
 			{
 				string tmp = reader.ReadLine();
 				storyLength += 1;
@@ -37,7 +39,7 @@ public class Story : MonoBehaviour {
 			}
 			while(reader.Peek() != -1);
 		}
-		finally 
+		finally
 		{
 			reader.Close();
 		}
@@ -55,23 +57,24 @@ public class Story : MonoBehaviour {
 		//Set up text object.
 		TxtWall = new GameObject("TextField");
 		Txt = TxtWall.AddComponent <TextMesh>() as TextMesh;
-		Bounds bounds = TxtWall.GetComponent<Renderer>().bounds;
+		TxtWall.AddComponent<BoxCollider> ();
 		Txt.anchor = TextAnchor.MiddleCenter;
 		Txt.alignment = TextAlignment.Center;
 		Txt.fontSize = 18;
 		Txt.color = Color.black;
-		TxtWall.transform.position = Cam.transform.position + Cam.transform.rotation * new Vector3 (0.0f, -10.0f, 40.0f);
-		TxtWall.transform.LookAt (Cam.transform.position);
-		TxtWall.transform.Rotate (0.0f, 180.0f, 0.0f);
 
 		//Start the story
 		TellStory ();
 		DisplayStory (text[0], audio[0]);
+		backgroundCube = GameObject.CreatePrimitive (PrimitiveType.Cube);
+		endOfExploringTime = 0.0;//This variable denotes when it should inform you that you can be done exploring.
+		if (StopForExploring == 0)
+			StopForExploring = -1;//Defaults to -1 so it there is none, unless you set it.
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown ("space")) {
+		if (Input.GetKeyDown ("space") && storyState != StopForExploring) {
 			if(display) {
 				if(audioSource.isPlaying) {
 					audioSource.Stop();
@@ -93,20 +96,40 @@ public class Story : MonoBehaviour {
 				}
 			}
 		}
+		if (!display) {
+			Txt.GetComponent<Renderer>().enabled = false;
+			audioSource.Stop();
+		}
+		if(storyState == StopForExploring) {
+			double time = GameObject.Find("GameMaster").GetComponent<MasterScript>().getTimer();
+			if (endOfExploringTime == 0.0) {
+				LetPlay ();
+				endOfExploringTime = time + 20;
+			}
+			else if (time >= endOfExploringTime) {
+				Debug.Log("THIS HERE");
+				TellStory ();
+				DisplayStory (text[storyState], audio[storyState]);
+				endOfExploringTime = 10000;//Huge value to ensure you can read and move on from end of exploration stage.
+			}
+		}
 	}
 
 	void TellStory() {
 		display = true;
-		GameObject.Find("Player").GetComponent<CharacterController>().enabled = false;
+		GameObject.Find("Player").GetComponent<MovePlayer>().enabled = false;
 	}
 
 	void LetPlay() {
 		display = false;
-		GameObject.Find("Player").GetComponent<CharacterController>().enabled = true;
+		GameObject.Find("Player").GetComponent<MovePlayer>().enabled = true;
 		Txt.GetComponent<Renderer> ().enabled = false;
 	}
 
 	void DisplayStory(string str, AudioClip ac) {
+		TxtWall.transform.position = Cam.transform.position + new Vector3 (20.0f, -6.0f, 0f);
+		TxtWall.transform.LookAt (Cam.transform.position);
+		TxtWall.transform.Rotate (0.0f, 180.0f, 0.0f);
 		int size = str.Length;
 		if (str.Length == 0) {
 			return;
@@ -127,5 +150,12 @@ public class Story : MonoBehaviour {
 		tmpStr += end;
 		Txt.text = tmpStr;
 		audioSource.PlayOneShot (ac, 1);
+		//Bounds bounds = TxtWall.GetComponent<Renderer>().bounds;
+		//backgroundCube.transform.position = TxtWall.transform.position;
+
+	}
+
+	void HideStory() {
+		display = false;
 	}
 }
