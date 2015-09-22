@@ -1,5 +1,9 @@
 ﻿import UnityEngine
-
+#Not really deprecated but it needs to be replaced.
+#A lot of code in this are forcibly creating textures when we could just be using Unity's built in GUI system.
+#Which also means this menu probably won't work well in VR.
+#Would require extensive fixes to the login screen.
+#Not that bad though, but definitely time consuming. - Jacob
 class Login (MonoBehaviour): 
 
 	public username as string

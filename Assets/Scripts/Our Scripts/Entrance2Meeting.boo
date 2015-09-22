@@ -1,5 +1,5 @@
 ﻿import UnityEngine
-
+#Deprecated code. Used for the old version of the office scene.
 class Entrance2Meeting (MonoBehaviour): 
 
 	def Start ():

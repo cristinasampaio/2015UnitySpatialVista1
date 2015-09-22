@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+//Deprecated code. Was going to be used for the original version of the game where the player was on rails.
+//Ended up not being used.
 public class follow : MonoBehaviour {
 	public Transform target;
 	public float smooth= 100.0f;

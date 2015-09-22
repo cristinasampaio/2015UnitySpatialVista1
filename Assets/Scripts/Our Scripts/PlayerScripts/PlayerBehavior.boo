@@ -9,6 +9,10 @@ Terms:
 	held object - means the object currently selected by index
 	dop - Depth of Displacement which is how far from the player the held object is.
 */
+
+#Basically what Alex said. Very important file, try not to mess with this too much.
+#...except it does need to be rewritten because of Boo. So I'll try to add some further comments
+#in hopes of making the behavior(s) needed clear. -Jacob
 class PlayerBehavior (MonoBehaviour): 
 	
 	numPlaced = 0#We should probably scrap my Placed idea above for something better.
@@ -57,6 +61,10 @@ class PlayerBehavior (MonoBehaviour):
 			ray2 as Ray =  Camera.main.ScreenPointToRay(Vector3(Screen.width/2, Screen.height/2, 0))
 		
 			#Code for highlighting objects that can be picked up.
+			#This may seem scary, but it's really just a bunch of checks.
+			#Basically we need to check to see if we're holding the object or not in addition to
+			#if we're just looking at it, and decide from there how we change the shader.
+			#This allows us to decide when and how it should be glowing.
 			if (Physics.Raycast(ray2, hit1, pickupDistance)):
 				if hit1.collider.gameObject.tag == 'target' or hit1.collider.gameObject.tag == 'nontarget':
 					if(obj != hit1.collider.gameObject):
@@ -101,7 +109,8 @@ class PlayerBehavior (MonoBehaviour):
 					i += 1
 				obj = null
 		
-
+			#Yeah. This needs to be rewritten because we're changing our confidencegui a bit.
+			#No clue though. Sorry. -Jacob
 			if showConfidenceGui:
 				if(Input.GetKeyDown(KeyCode.Backspace) or Input.GetButtonDown("Fire2")):
 						showConfidenceGui = false
@@ -170,7 +179,7 @@ class PlayerBehavior (MonoBehaviour):
 		except e:
 			Debug.Log("There was an error in finishing writing to data.scv\nYou should press return in the document to set the writer to a newline.")
 		
-		
+	#Will be removed once the UI is fixed. Instead will be a simple call to the UI itself.	
 	def OnConfidenceGUI ():
 		dialogWidth = 400;
 		dialogHeight = 200;
