@@ -1,4 +1,5 @@
 ﻿#pragma strict
+//No clue. Sorry - Jacob
 var playNormal : Texture2D;
 var playHover : Texture2D;
 var login : GameObject;

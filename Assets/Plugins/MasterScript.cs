@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.IO;
 
 public class MasterScript : MonoBehaviour {
+	/*If you're wondering why this is in plugins
+	 It's because this script needs to run first above all others. That's mainly why.
+	 Also as a note this is another important script, but thankfully was more recently written.
+	 -Jacob*/
 
 	string scene = "";
 	bool flag = false;
@@ -83,7 +87,7 @@ public class MasterScript : MonoBehaviour {
 			getNextFloor();
 		}
 	}
-
+	//Logic to decide if we're going to the next test or the next elevator floor.
 	public void getNextFloor() {
 		if (elevFloorsRem <= 0) {
 			if(testFloorsRem == 0)
@@ -179,7 +183,7 @@ public class MasterScript : MonoBehaviour {
 			
 		Application.Quit ();
 	}
-
+	//Test floors meaning places where players pick up and drop objects.
 	public void loadNextTest()
 	{
 		if(state == 1) {
@@ -209,7 +213,7 @@ public class MasterScript : MonoBehaviour {
 		levelTimer = 0.0;
 		doorTimeDelay = 120.0;
 	}
-
+	//Elevator floors meaning the kinda-jokey floors where you just hang out. In an elevator.
 	public void loadNextElevator()
 	{
 		//Debug.Log("Going to next floor " + state);

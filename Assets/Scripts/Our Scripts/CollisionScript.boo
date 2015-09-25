@@ -1,5 +1,5 @@
 ﻿import UnityEngine
-
+#Deprecated code I believe.
 class CollisionScript (MonoBehaviour): 
 	val as GameObject
 	

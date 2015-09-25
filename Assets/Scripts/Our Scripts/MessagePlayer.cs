@@ -10,6 +10,10 @@ using System.Collections;
  * 
  */
 
+
+//Deprecated code. Not used anymore after development of a new tutorial.
+//Also kinda rude comments above.
+//Left just for the sake of history.
 public class MessagePlayer : MonoBehaviour {
 
 	//tracks players progress through tutorial
