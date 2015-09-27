@@ -48,7 +48,8 @@ public class NewCharMover : MonoBehaviour {
 		//A result of using pre-made scenes from different sources which did not adher to a standard scale.
 		//Could be removed in the future if all scenes were homebaked with scale standards.
 		//Until then, with each new scene you'll have to mess around to get the right scale.
-		if (Application.loadedLevelName == "Apartment01_2") {
+		//Also, the office is used as the standard of what is good scale (hahahahahaha)
+		if (Application.loadedLevelName == "Apartment_Scene") {
 			scale = .13f;
 		} else if (Application.loadedLevelName == "testingtutorial") {
 			scale = .4f;
