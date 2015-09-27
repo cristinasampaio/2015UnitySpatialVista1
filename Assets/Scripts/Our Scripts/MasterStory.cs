@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.VR;
 
 public class MasterStory : MonoBehaviour {
 	//WIP: To be used for story purposes
@@ -29,30 +30,117 @@ public class MasterStory : MonoBehaviour {
 	{
 		APARTMENT,
 		OFFICE,
+		NONE,
 	}
 
-	STORYTYPE currentStory;
-	bool firstVisit = true;
+	STORYTYPE currentStory = STORYTYPE.NONE;
+	bool visitApartment = false;
+	bool visitOffice = false;
+	bool storyPause = false;
+	bool uiActive = false;
+	int storyState = 0;
+	UIDisp uiObj;
 
 	// Use this for initialization
 	void Start () {
 	
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
+		if (Input.GetKeyDown ("space") && storyPause == false) {
+			switch (currentStory) {
+			case STORYTYPE.APARTMENT:
+				apartmentFunc ();
+				break;
+			case STORYTYPE.OFFICE:
+				officeFunc ();
+				break;
+			}
+		} 
+		else if (Input.GetKeyDown ("space") && storyPause == true)
+		{
+			uiObj.disableUI();
+		}
+
 	
 	}
 
 	void OnLevelWasLoaded(int level)
 	{
 		string name = Application.loadedLevelName;
-		if (name == "Apartment_Scene")
+		if (name == "Apartment_Scene") {
 			currentStory = STORYTYPE.APARTMENT;
-		else if (name == "Office_Scene")
+			apartmentFunc ();
+		} else if (name == "Office_Scene") {
 			currentStory = STORYTYPE.OFFICE;
+			officeFunc ();
+		} else {
+			storyPause = true;
+		}
 
 		//Note to self: At this point it should also do something to consider how many strings it needs to print out
 		//Best option is to probably just have all the logic in here, but it'll be messy.
+	}
+
+	void apartmentFunc()
+	{
+		if (visitApartment = false) {
+			storyState = 0;
+			visitApartment = true;
+		}
+		if (storyState == 0) {
+			uiObj = GameObject.Find ("UI").GetComponent<UIDisp> ();
+		} else if (storyState > apartStory.Length) {
+			storyPause = true;
+			return;
+		}
+		uiObj.sendTextToUi (apartStory [storyState]);
+
+		storyPause = false;
+
+		if (storyState == 1 || storyState == 2 || storyState == 4) {
+			storyPause = true;
+		}
+
+		storyState++;
+
+	}
+
+	void officeFunc()
+	{
+		if (visitOffice = false) {
+			storyState = 0;
+			visitApartment = true;
+		}
+		if (storyState == 0) {
+			uiObj = Camera.main.GetComponentInChildren<UIDisp>();
+		}
+		else if (storyState > officeStory.Length) {
+			storyPause = true;
+			return;
+		}
+		uiObj.sendTextToUi (officeStory [storyState]);
+
+		storyPause = false;
+
+		if (storyState == 3 || storyState == 4 || storyState == 7) {
+			storyPause = true;
+		}
+
+		storyState++;
+
+	}
+
+	void unpauseStory(){
+		switch(currentStory)
+	    {
+			case STORYTYPE.APARTMENT:
+				apartmentFunc ();
+				break;
+			case STORYTYPE.OFFICE:
+				officeFunc ();
+				break;
+		}
 	}
 }

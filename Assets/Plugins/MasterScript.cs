@@ -84,6 +84,8 @@ public class MasterScript : MonoBehaviour {
 
 		if (!canOpen && levelTimer >= doorTimeDelay) {
 			canOpen = true;
+			//NOTE: REALLY BAD AND HACKY WORKAROUND
+			this.SendMessage("unpauseStory");
 		}
 
 		if (delayTimer > 0.0 && isSet) {
@@ -94,7 +96,6 @@ public class MasterScript : MonoBehaviour {
 		{
 			GameObject.Find("Fader").GetComponent<FadeInOut>().FadeOut();
 			fade = true;
-			Debug.Log("hi");
 		}
 
 		else if (delayTimer <= 0.0 && isSet) {
