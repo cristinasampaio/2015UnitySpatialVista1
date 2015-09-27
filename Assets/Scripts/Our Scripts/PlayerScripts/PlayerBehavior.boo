@@ -40,6 +40,10 @@ class PlayerBehavior (MonoBehaviour):
 	hasObject = false
 	currObject as GameObject
 	
+	//For deciding what buttons involving objects do.
+	private controllerConnected = false;
+	private OculusConnected = false;
+	
 	def Start():
 		dop = (dop * gameObject.transform.localScale.y)
 		default_dop = dop
@@ -47,7 +51,12 @@ class PlayerBehavior (MonoBehaviour):
 		highlightShader = Shader.Find("Self-Illumin/Diffuse")
 		normalShader = []
 		tempShader = []
+		
+		//Probably should be improved
 		currentState = GameObject.Find("GameMaster").GetComponent[of MasterScript]().getState()
+		controllerConnected = GameObject.Find("GameMaster").GetComponent[of MasterScript]().getGamePad()
+		OculusConnected = GameObject.Find("GameMaster").GetComponent[of MasterScript]().getVR()
+		
 		mystyle.fontSize = 20
 		mystyle.wordWrap = true
 		mystyle.alignment = TextAnchor.UpperCenter
@@ -155,13 +164,35 @@ class PlayerBehavior (MonoBehaviour):
 				if hasObject:
 					currObject.transform.position = Camera.main.ScreenToWorldPoint(Vector3(Screen.width/2, Screen.height/2, (Camera.main.nearClipPlane+dop)))
 
-					if Input.GetAxis("Mouse ScrollWheel") or Input.GetAxis("RightStickVertical"):
-						sign = Input.GetAxis("Mouse ScrollWheel") or -Input.GetAxis("RightStickVertical");
+				if controllerConnected and OculusConnected:
+					if (Input.GetAxis("Mouse ScrollWheel") or Input.GetAxis("RightStickVertical")):
+						sign = Input.GetAxis("Mouse ScrollWheel") or -Input.GetAxis("RightStickVertical")
 						//Debug.Log(sign);
 						if (sign > 0.05 and dop < 3.0 * gameObject.transform.localScale.y):
 							dop += .03
 						elif (sign < -0.05 and dop > 0.5 * gameObject.transform.localScale.y):
 							dop -= .03
+				elif controllerConnected and not OculusConnected:
+					if Input.GetAxis("Mouse ScrollWheel") or (Input.GetButtonDown("RightBumper") or Input.GetButtonDown("LeftBumper")):
+						sign = Input.GetAxis("Mouse ScrollWheel")
+						//Special code for using the bumpers.
+						if Input.GetButtonDown("RightBumper"):
+							sign = 1.0
+						elif Input.GetButtonDown("LeftBumper"):
+							sign = -1.0
+						if (sign > 0.05 and dop < 3.0 * gameObject.transform.localScale.y):
+							dop += .03
+						elif (sign < -0.05 and dop > 0.5 * gameObject.transform.localScale.y):
+							dop -= .03
+				else:
+					if Input.GetAxis("Mouse ScrollWheel"):
+						sign = Input.GetAxis("Mouse ScrollWheel")
+						//Debug.Log(sign);
+						if (sign > 0.05 and dop < 3.0 * gameObject.transform.localScale.y):
+							dop += .03
+						elif (sign < -0.05 and dop > 0.5 * gameObject.transform.localScale.y):
+							dop -= .03
+				
 							
 	#Will just Exit the game for now, should be changed later.
 	#Maybe Reset to scene 1? Perhaps say YOU WIN(even if you don't)

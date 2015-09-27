@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine.VR;
 
 public class MasterScript : MonoBehaviour {
 	/*If you're wondering why this is in plugins
@@ -39,9 +40,22 @@ public class MasterScript : MonoBehaviour {
 	List<string> travelFloors = new List<string>();
 	private int testFloorsRem;
 
+	//For the last 2 functions in this script.
+	private bool controllerConected = false;
+	private bool OculusConnected = false;
+
 
 	// Use this for initialization
 	void Start () {
+
+		string[] names = Input.GetJoystickNames ();
+		if (names.Length > 0) {
+			controllerConected = true;
+		}
+		if (VRDevice.isPresent) {
+			OculusConnected = true;
+		}
+
 		//First add the testFloors
 		testFloors.Add ("Office_Scene");
 		testFloors.Add ("Apartment01_2");
@@ -230,5 +244,13 @@ public class MasterScript : MonoBehaviour {
 		levelTimer = 0.0;
 		delayTimer = 10.0;
 		doorTimeDelay = 10.0;
+	}
+
+	public bool getVR() {
+		return OculusConnected;
+	}
+
+	public bool getGamePad() {
+		return controllerConected;
 	}
 }
