@@ -10,8 +10,8 @@ public class NewCharMover : MonoBehaviour {
 	//It might be worth just activating the script rather then moving it here, but we shall see.
 	public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
 	public RotationAxes axes = RotationAxes.MouseXAndY;
-	public float sensitivityX = 100F;
-	public float sensitivityY = 100F;
+	float sensitivityX = 5F;
+	float sensitivityY = 5F;
 	
 	public float minimumX = -360F;
 	public float maximumX = 360F;
@@ -115,9 +115,9 @@ public class NewCharMover : MonoBehaviour {
 
 		if (axes == RotationAxes.MouseXAndY)
 		{
-			float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+			float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * 5;
 			
-			rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+			rotationY += Input.GetAxis("Mouse Y") * 5;
 			rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
 			
 			transform.localEulerAngles = new Vector3(0, rotationX, 0);
@@ -140,11 +140,10 @@ public class NewCharMover : MonoBehaviour {
 	void Controller() {
 		float Horizontal = Input.GetAxis ("Horizontal");
 		float Vertical = Input.GetAxis ("Vertical");
-		
 		moveDirection = new Vector3(Horizontal, 0, Vertical);
 		moveDirection = transform.TransformDirection (moveDirection);
 
-		float rotationX = transform.localEulerAngles.y + Input.GetAxis("RightStickHorizontal") * sensitivityX;
+		float rotationX = transform.localEulerAngles.y + Input.GetAxis("RightStickHorizontal");
 		
 		rotationY += Input.GetAxis("RightStickVertical") * sensitivityY;
 		rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
@@ -177,7 +176,7 @@ public class NewCharMover : MonoBehaviour {
 				 with the in-scene camera, hence the recenter option. */
 			rotation = Camera.main.transform.eulerAngles.y;
 			if (Mathf.Abs((rotation - this.transform.eulerAngles.y)) > 60.0f) {
-				Debug.Log (Camera.main.transform.eulerAngles.y);
+				//Debug.Log (Camera.main.transform.eulerAngles.y);
 				transform.eulerAngles = new Vector3(this.transform.rotation.eulerAngles.x, rotation, this.transform.rotation.eulerAngles.z);
 				//Camera.main.transform.rotation = new Quaternion(Camera.main.transform.rotation.x, 0, Camera.main.transform.rotation.z, Camera.main.transform.rotation.w);
 				if(VRDevice.isPresent)

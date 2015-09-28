@@ -217,9 +217,9 @@ public class MasterScript : MonoBehaviour {
 				GameObject.Find("Fader").GetComponent<FadeInOut>().FadeIn();
 				isTutorial = false;
 			}
+			state = 1;
 			Application.LoadLevel(testFloors[0] as string);
 			writeInfo(lastFloor, levelTimer);
-			state = 1;
 		}
 
 		GameObject hallFrame = GameObject.Find("ElevHallFrame");
@@ -227,7 +227,6 @@ public class MasterScript : MonoBehaviour {
 		globalTime += levelTimer;
 		levelTimer = 0.0;
 		doorTimeDelay = 120.0;
-		GameObject.Find("Player").SendMessage("receiveState", state);
 	}
 	//Elevator floors meaning the kinda-jokey floors where you just hang out. In an elevator.
 	public void loadNextElevator()
@@ -254,5 +253,10 @@ public class MasterScript : MonoBehaviour {
 
 	public bool getGamePad() {
 		return controllerConected;
+	}
+
+	public void OnLevelWasLoaded(int level)
+	{
+		GameObject.Find("Player").SendMessage("receiveState", state);
 	}
 }

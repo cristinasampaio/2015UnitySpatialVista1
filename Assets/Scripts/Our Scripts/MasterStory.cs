@@ -48,7 +48,7 @@ public class MasterStory : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown ("space") && storyPause == false) {
+		if ((Input.GetKeyDown ("space") || Input.GetButtonDown("Fire1")) && storyPause == false) {
 			switch (currentStory) {
 			case STORYTYPE.APARTMENT:
 				apartmentFunc ();
@@ -58,7 +58,7 @@ public class MasterStory : MonoBehaviour {
 				break;
 			}
 		} 
-		else if (Input.GetKeyDown ("space") && storyPause == true)
+		else if ((Input.GetKeyDown ("space") || Input.GetButtonDown("Fire1")) && storyPause == true)
 		{
 			uiObj.disableUI();
 		}
