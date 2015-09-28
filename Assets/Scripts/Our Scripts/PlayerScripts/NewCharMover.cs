@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.VR;
 //Written by Jacob Kennedy and Alex Freedman.
 //Designed more for VR.
@@ -31,6 +32,19 @@ public class NewCharMover : MonoBehaviour {
 	private float rotation;
 	CharacterController controller;
 
+	int currentState = 0;
+
+	//This stuff is more for general highlighting and pickup
+	float pickupDistance = 30.0f;
+	float dop = 1.5f;
+	bool pickedUp = false;
+	bool isHighlight = false;
+	GameObject obj = null;
+	Shader highlightShader;
+	List<Shader> shaderList = new List<Shader>();
+
+	private Color normalColor;
+
 	//For deciding what buttons involving objects do.
 	private bool controllerConnected = false;
 	private bool OculusConnected = false;
@@ -39,6 +53,8 @@ public class NewCharMover : MonoBehaviour {
 	void Start () {
 		controller = GetComponent<CharacterController>();
 		controller.enabled = true;
+		//Shader stuff
+		highlightShader = Shader.Find ("Self-Illumin/Diffuse");
 
 		//Probably should be improved
 		controllerConnected = GameObject.Find ("GameMaster").GetComponent<MasterScript> ().getGamePad ();
@@ -67,6 +83,11 @@ public class NewCharMover : MonoBehaviour {
 	// 2. With Contorller
 	// 3. With Oculus
 	void Update () {
+		if (currentState == 2) {
+			//highlightObjects();
+			//objPickDrop();
+			//pickedUpUpdate ();
+		}
 		if (controller.enabled = true) {
 			if (controllerConnected && OculusConnected) {
 				Oculus(); //Includes special controller layout for Oculus
@@ -166,5 +187,97 @@ public class NewCharMover : MonoBehaviour {
 				
 			}
 		}
+	}
+
+	void highlightObjects()
+	{
+		RaycastHit hit1;
+		Ray ray2 = Camera.main.ScreenPointToRay (new Vector3 (Screen.width / 2, Screen.height / 2, 0));
+		if (Physics.Raycast (ray2, out hit1, pickupDistance)) {
+			if ((hit1.collider.gameObject.tag == "target" || hit1.collider.gameObject.tag == "nontarget") && pickedUp == false) {
+				if (obj == null) {
+					obj = hit1.collider.gameObject;
+
+					foreach (Material mat in obj.GetComponent<Renderer>().materials)
+					{
+						shaderList.Add(mat.shader);
+					}
+
+					foreach (Material mat in obj.GetComponent<Renderer>().materials)
+					{
+						mat.shader = highlightShader;
+					}
+
+					isHighlight = true;
+				}
+				else if (obj == hit1.collider.gameObject)
+				{
+					//do nothing
+				}
+			}
+			else if (obj != null && pickedUp == true && isHighlight == true)
+			{
+				foreach (Material mat in obj.GetComponent<Renderer>().materials)
+				{
+					mat.shader = shaderList[0];
+					shaderList.RemoveAt(0);
+				}
+				isHighlight = false;
+			}
+			else if (obj != null && isHighlight == true && pickedUp == false)
+			{
+				foreach (Material mat in obj.GetComponent<Renderer>().materials)
+				{
+					mat.shader = shaderList[0];
+					shaderList.RemoveAt(0);
+				}
+				isHighlight = false;
+				obj = null;
+			}
+		}
+
+	}
+
+	void objPickDrop()
+	{
+		if (obj != null && pickedUp == false && (obj.tag == "target" || obj.tag == "nontarget")) {
+			pickedUp = true;
+
+			foreach (Collider col in obj.GetComponents<Collider>())
+			{
+				col.enabled = false;
+			}
+			Rigidbody body = obj.GetComponent<Rigidbody>();
+			body.useGravity = false;
+			body.constraints = RigidbodyConstraints.FreezeAll;
+			body.constraints &= ~RigidbodyConstraints.FreezePositionY;
+			//can't access Boo script here for rotation
+		}
+		else if (obj != null && pickedUp == true)
+		{
+			pickedUp = false;
+			foreach (Collider col in obj.GetComponents<Collider>())
+			{
+				col.enabled = false;
+			}
+			Rigidbody body = obj.GetComponent<Rigidbody>();
+			body.useGravity = true;
+			body.velocity = new Vector3(0f, -.01f,0f);
+			//can't access writecoordinates here due to boo script
+
+		}
+	}
+
+	void pickedUpUpdate()
+	{
+		if (obj != null && pickedUp == true)
+		{
+			obj.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width/2, Screen.height/2, (Camera.main.nearClipPlane+dop)));
+		}
+	}
+
+	void receiveState(int state)
+	{
+		currentState = state;
 	}
 }

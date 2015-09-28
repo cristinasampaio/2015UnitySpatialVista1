@@ -36,7 +36,7 @@ class PlayerBehavior (MonoBehaviour):
 	default_dop = 1.5
 	
 	#inventory
-	pickupDistance = 3.0
+	pickupDistance = 50.0;
 	hasObject = false
 	currObject as GameObject
 	

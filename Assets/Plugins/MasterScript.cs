@@ -47,7 +47,7 @@ public class MasterScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		GameObject.Find("Player").SendMessage("receiveState", state);
 		string[] names = Input.GetJoystickNames ();
 		if (names.Length > 0) {
 			controllerConected = true;
@@ -227,6 +227,7 @@ public class MasterScript : MonoBehaviour {
 		globalTime += levelTimer;
 		levelTimer = 0.0;
 		doorTimeDelay = 120.0;
+		GameObject.Find("Player").SendMessage("receiveState", state);
 	}
 	//Elevator floors meaning the kinda-jokey floors where you just hang out. In an elevator.
 	public void loadNextElevator()

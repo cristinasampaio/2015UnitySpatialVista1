@@ -71,9 +71,11 @@ public class MasterStory : MonoBehaviour {
 		string name = Application.loadedLevelName;
 		if (name == "Apartment_Scene") {
 			currentStory = STORYTYPE.APARTMENT;
+			uiObj = Camera.main.GetComponentInChildren<UIDisp>();
 			apartmentFunc ();
 		} else if (name == "Office_Scene") {
 			currentStory = STORYTYPE.OFFICE;
+			uiObj = Camera.main.GetComponentInChildren<UIDisp>();
 			officeFunc ();
 		} else {
 			storyPause = true;
@@ -89,9 +91,7 @@ public class MasterStory : MonoBehaviour {
 			storyState = 0;
 			visitApartment = true;
 		}
-		if (storyState == 0) {
-			uiObj = GameObject.Find ("UI").GetComponent<UIDisp> ();
-		} else if (storyState > apartStory.Length) {
+		if (storyState > apartStory.Length) {
 			storyPause = true;
 			return;
 		}
@@ -113,10 +113,7 @@ public class MasterStory : MonoBehaviour {
 			storyState = 0;
 			visitApartment = true;
 		}
-		if (storyState == 0) {
-			uiObj = Camera.main.GetComponentInChildren<UIDisp>();
-		}
-		else if (storyState > officeStory.Length) {
+		if (storyState > officeStory.Length) {
 			storyPause = true;
 			return;
 		}
