@@ -23,12 +23,13 @@ public class tutAccuracyScript : MonoBehaviour {
 		this.z = ogPos.z;
 		this.transform.position = new Vector3 (16.0f, 12.0f, 10.0f);
 		tutorialManager = GameObject.Find ("TutorialManager");
-		id = tutorialManager.GetComponent<TutorialControlScript> ().registerObj(layer);
+		tutorialManager.GetComponent<TutorialControlScript> ().registerObj(layer, moveToRoom);
 	}
 	
 	void moveToRoom()
 	{
 		this.transform.position = new Vector3 (13.865f, 13.377f, -1.6789f);
+		Debug.Log ("hello!");
 		clone.transform.position = ogPos;
 	}
 }
