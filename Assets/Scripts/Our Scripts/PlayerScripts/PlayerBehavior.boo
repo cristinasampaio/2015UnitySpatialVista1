@@ -174,6 +174,7 @@ class PlayerBehavior (MonoBehaviour):
 							dop -= .03
 				elif controllerConnected and not OculusConnected:
 					if Input.GetAxis("Mouse ScrollWheel") or (Input.GetButtonDown("RightBumper") or Input.GetButtonDown("LeftBumper")):
+						Debug.Log("THIS HERE");
 						sign = Input.GetAxis("Mouse ScrollWheel")
 						//Special code for using the bumpers.
 						if Input.GetButtonDown("RightBumper"):

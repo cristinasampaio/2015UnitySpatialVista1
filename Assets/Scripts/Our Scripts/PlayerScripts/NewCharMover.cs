@@ -35,7 +35,7 @@ public class NewCharMover : MonoBehaviour {
 	int currentState = 0;
 
 	//This stuff is more for general highlighting and pickup
-	float pickupDistance = 30.0f;
+	float pickupDistance = 10.0f;
 	float dop = 1.5f;
 	bool pickedUp = false;
 	bool isHighlight = false;
@@ -59,6 +59,7 @@ public class NewCharMover : MonoBehaviour {
 		//Probably should be improved
 		controllerConnected = GameObject.Find ("GameMaster").GetComponent<MasterScript> ().getGamePad ();
 		OculusConnected = GameObject.Find ("GameMaster").GetComponent<MasterScript> ().getVR ();
+		receiveState (GameObject.Find("GameMaster").GetComponent<MasterScript>().getState());
 
 		//If you're wondering, this is because every scene has a different innate scale associated with it.
 		//A result of using pre-made scenes from different sources which did not adher to a standard scale.
@@ -73,20 +74,21 @@ public class NewCharMover : MonoBehaviour {
 			scale = 1.0f;
 		}
 
-		//if (GetComponent<Rigidbody>())
-			//GetComponent<Rigidbody>().freezeRotation = true;
+		pickupDistance *= scale;
+
+		//TODO: Add Font Information/Variables
 	}
 	
 	// Update is called once per frame
-	//There will be 3 different update types
+	//There will be 3 different update types + The object pickup, drop, and adjustment code.
 	// 1. With Mouse and Keyboard
 	// 2. With Contorller
 	// 3. With Oculus
 	void Update () {
 		if (currentState == 2) {
-			//highlightObjects();
-			//objPickDrop();
-			//pickedUpUpdate ();
+			highlightObjects();
+			objPickDrop();
+			pickedUpUpdate ();
 		}
 		if (controller.enabled = true) {
 			if (controllerConnected && OculusConnected) {
@@ -95,6 +97,21 @@ public class NewCharMover : MonoBehaviour {
 			}
 			else if (controllerConnected && !OculusConnected) {
 				Controller();//Should be just controller support, might add keyboard to work here too.
+				if (pickedUp == true) {
+					double sign = 0.0;
+					if (Input.GetButtonDown("RightBumper")) {
+						sign = 1.0;
+					}
+					else if (Input.GetButtonDown("LeftBumper")) {
+						sign = -1.0;
+					}
+					if (sign > 0.05 && dop < 3.0 * scale) {
+						dop += .03f;
+					}
+					else if (sign < -0.05 && dop > 0.5 * scale) {
+						dop -= .03f;
+					}
+				}
 			}
 			else {
 				MouseandKeyboard();
@@ -138,14 +155,16 @@ public class NewCharMover : MonoBehaviour {
 
 	//This is for movement with controller.
 	void Controller() {
-		float Horizontal = Input.GetAxis ("Horizontal");
-		float Vertical = Input.GetAxis ("Vertical");
-		moveDirection = new Vector3(Horizontal, 0, Vertical);
+		float Horizontal = 0f;
+		float Vertical = 0f;
+		Horizontal = Input.GetAxis ("RightStickHorizontal");
+		Vertical = Input.GetAxis ("LeftStickVertical");
+		moveDirection = new Vector3(Horizontal, 0, -Vertical);
 		moveDirection = transform.TransformDirection (moveDirection);
 
-		float rotationX = transform.localEulerAngles.y + Input.GetAxis("RightStickHorizontal");
+		float rotationX = transform.localEulerAngles.y + Input.GetAxis("RightStickHorizontal") * 5;
 		
-		rotationY += Input.GetAxis("RightStickVertical") * sensitivityY;
+		rotationY -= Input.GetAxis("RightStickVertical") * sensitivityY;
 		rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
 		
 		transform.localEulerAngles = new Vector3(0, rotationX, 0);
@@ -188,82 +207,80 @@ public class NewCharMover : MonoBehaviour {
 		}
 	}
 
+
+
 	void highlightObjects()
 	{
 		RaycastHit hit1;
-		Ray ray2 = Camera.main.ScreenPointToRay (new Vector3 (Screen.width / 2, Screen.height / 2, 0));
-		if (Physics.Raycast (ray2, out hit1, pickupDistance)) {
+		Ray ray = Camera.main.ScreenPointToRay (new Vector3 (Screen.width / 2, Screen.height / 2, 0));
+		if (Physics.Raycast (ray, out hit1, pickupDistance)) {
 			if ((hit1.collider.gameObject.tag == "target" || hit1.collider.gameObject.tag == "nontarget") && pickedUp == false) {
 				if (obj == null) {
 					obj = hit1.collider.gameObject;
 
-					foreach (Material mat in obj.GetComponent<Renderer>().materials)
-					{
-						shaderList.Add(mat.shader);
+					foreach (Material mat in obj.GetComponent<Renderer>().materials) {
+						shaderList.Add (mat.shader);
 					}
 
-					foreach (Material mat in obj.GetComponent<Renderer>().materials)
-					{
+					foreach (Material mat in obj.GetComponent<Renderer>().materials) {
 						mat.shader = highlightShader;
 					}
 
 					isHighlight = true;
 				}
-				else if (obj == hit1.collider.gameObject)
-				{
-					//do nothing
-				}
-			}
-			else if (obj != null && pickedUp == true && isHighlight == true)
-			{
-				foreach (Material mat in obj.GetComponent<Renderer>().materials)
-				{
-					mat.shader = shaderList[0];
-					shaderList.RemoveAt(0);
+			} else if (obj != null && pickedUp == true && isHighlight == true) {
+				Debug.Log ("OR PERHAPS THIS");
+				foreach (Material mat in obj.GetComponent<Renderer>().materials) {
+					mat.shader = shaderList [0];
+					shaderList.RemoveAt (0);
 				}
 				isHighlight = false;
 			}
-			else if (obj != null && isHighlight == true && pickedUp == false)
+		}
+		else if (obj != null && isHighlight == true && pickedUp == false)
+		{
+			Debug.Log ("AYBE TGUI");
+			foreach (Material mat in obj.GetComponent<Renderer>().materials)
 			{
-				foreach (Material mat in obj.GetComponent<Renderer>().materials)
-				{
-					mat.shader = shaderList[0];
-					shaderList.RemoveAt(0);
-				}
-				isHighlight = false;
-				obj = null;
+				mat.shader = shaderList[0];
+				shaderList.RemoveAt(0);
 			}
+			isHighlight = false;
+			obj = null;
 		}
 
 	}
 
 	void objPickDrop()
 	{
-		if (obj != null && pickedUp == false && (obj.tag == "target" || obj.tag == "nontarget")) {
-			pickedUp = true;
+		if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1")) {
+			if (obj != null && pickedUp == false && (obj.tag == "target" || obj.tag == "nontarget")) {
+				pickedUp = true;
 
-			foreach (Collider col in obj.GetComponents<Collider>())
-			{
-				col.enabled = false;
+				foreach (Collider col in obj.GetComponents<Collider>())
+				{
+					col.enabled = false;
+				}
+				Rigidbody body = obj.GetComponent<Rigidbody>();
+				body.useGravity = false;
+				body.constraints = RigidbodyConstraints.FreezeAll;
+				body.constraints &= ~RigidbodyConstraints.FreezePositionY;
+				//can't access Boo script here for rotation
 			}
-			Rigidbody body = obj.GetComponent<Rigidbody>();
-			body.useGravity = false;
-			body.constraints = RigidbodyConstraints.FreezeAll;
-			body.constraints &= ~RigidbodyConstraints.FreezePositionY;
-			//can't access Boo script here for rotation
-		}
-		else if (obj != null && pickedUp == true)
-		{
-			pickedUp = false;
-			foreach (Collider col in obj.GetComponents<Collider>())
+			else if (obj != null && pickedUp == true)
 			{
-				col.enabled = false;
-			}
-			Rigidbody body = obj.GetComponent<Rigidbody>();
-			body.useGravity = true;
-			body.velocity = new Vector3(0f, -.01f,0f);
-			//can't access writecoordinates here due to boo script
+				pickedUp = false;
+				foreach (Collider col in obj.GetComponents<Collider>())
+				{
+					col.enabled = true;
+				}
+				Rigidbody body = obj.GetComponent<Rigidbody>();
+				body.useGravity = true;
+				body.velocity = new Vector3(0f, -.01f,0f);
+				obj = null;
+				//can't access writecoordinates here due to boo script
 
+			}
 		}
 	}
 
