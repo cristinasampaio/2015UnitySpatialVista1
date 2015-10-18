@@ -159,6 +159,8 @@ public class NewCharMover : MonoBehaviour {
 		float Vertical = 0f;
 		Horizontal = Input.GetAxis ("RightStickHorizontal");
 		Vertical = Input.GetAxis ("LeftStickVertical");
+
+		Debug.Log ("Horizontal = " + Horizontal + " :  Vertical = " + Vertical);
 		moveDirection = new Vector3(Horizontal, 0, -Vertical);
 		moveDirection = transform.TransformDirection (moveDirection);
 
@@ -176,7 +178,6 @@ public class NewCharMover : MonoBehaviour {
 		if (controller.isGrounded) {
 			float Horizontal = Input.GetAxis ("Horizontal");
 			float Vertical = Input.GetAxis ("Vertical");
-			
 			moveDirection = new Vector3(0, 0, Vertical);
 			moveDirection = transform.TransformDirection (moveDirection);
 			rotateDirection = Horizontal;
