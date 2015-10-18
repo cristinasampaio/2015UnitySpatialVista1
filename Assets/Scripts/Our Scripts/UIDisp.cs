@@ -86,14 +86,15 @@ public class UIDisp : MonoBehaviour {
 	public void OnLevelWasLoaded(int id)
 	{
 		if (Application.loadedLevelName == "OFfice_Scene") {
-			offset = new Vector3(1f, 0f, 0f);
 			distx = 1f;
 			distz = 0f;
 			disty = 0f;
+			offset = new Vector3(distx, disty, distz);
 		} else if (Application.loadedLevelName == "Apartment_Scene") {
 			distx = -1f;
 			disty = 0f;
 			distz = 0f;
+			offset = new Vector3(distx, disty, distz);
 		}
 	}
 }
