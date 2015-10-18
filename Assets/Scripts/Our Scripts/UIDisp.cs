@@ -8,12 +8,17 @@ public class UIDisp : MonoBehaviour {
 	CanvasGroup tpanel;
 	CanvasGroup cpanel;
 	Text tbox;
+	public float distz = 1.2f;
+	public float distx = 0f;
+	public float disty = 0f;
 	bool tdisp = false;
 	bool cdisp = false;
 	bool isOn = false;
+	Vector3 offset;
 
 	// Use this for initialization
 	void Awake () {
+		offset = new Vector3 (distx, disty, distz);
 		cgroups = this.GetComponentsInChildren (typeof(CanvasGroup));
 		foreach (CanvasGroup group in cgroups) {
 			if (group.name == "TextPanel")
@@ -30,6 +35,11 @@ public class UIDisp : MonoBehaviour {
 
 		}
 	
+	}
+
+	public void Update()
+	{
+		this.GetComponent<RectTransform> ().position = Camera.main.transform.position + offset;
 	}
 
 	public void sendTextToUi(string text)
@@ -72,5 +82,18 @@ public class UIDisp : MonoBehaviour {
 	{
 		//shell function
 		//shows the confidence interval panel with potentially name of the object
+	}
+	public void OnLevelWasLoaded(int id)
+	{
+		if (Application.loadedLevelName == "OFfice_Scene") {
+			offset = new Vector3(1f, 0f, 0f);
+			distx = 1f;
+			distz = 0f;
+			disty = 0f;
+		} else if (Application.loadedLevelName == "Apartment_Scene") {
+			distx = -1f;
+			disty = 0f;
+			distz = 0f;
+		}
 	}
 }
