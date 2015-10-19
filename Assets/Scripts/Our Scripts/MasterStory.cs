@@ -43,7 +43,7 @@ public class MasterStory : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		uiObj = GameObject.Find ("UI").GetComponent<UIDisp>();
 	}
 
 	// Update is called once per frame
