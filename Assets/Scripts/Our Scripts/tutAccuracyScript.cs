@@ -14,6 +14,9 @@ public class tutAccuracyScript : MonoBehaviour {
 	public delegate void move();
 	move thisDelegate;
 
+	public delegate void remm(int layer);
+	remm returnDelegate;
+
 	// Use this for initialization
 	void Start () {
 		thisDelegate = moveToRoom;
@@ -29,7 +32,6 @@ public class tutAccuracyScript : MonoBehaviour {
 	void moveToRoom()
 	{
 		this.transform.position = new Vector3 (13.865f, 13.377f, -1.6789f);
-		Debug.Log ("hello!");
 		clone.transform.position = ogPos;
 	}
 }

@@ -36,14 +36,14 @@ public class MasterStory : MonoBehaviour {
 	STORYTYPE currentStory = STORYTYPE.NONE;
 	bool visitApartment = false;
 	bool visitOffice = false;
-	bool storyPause = false;
+	bool storyPause = true;
 	bool uiActive = false;
 	int storyState = 0;
 	UIDisp uiObj;
 
 	// Use this for initialization
 	void Start () {
-		uiObj = GameObject.Find ("UI").GetComponent<UIDisp>();
+		uiObj = GameObject.Find ("UI").GetComponent<UIDisp> ();
 	}
 
 	// Update is called once per frame
@@ -58,7 +58,7 @@ public class MasterStory : MonoBehaviour {
 				break;
 			}
 		} 
-		else if ((Input.GetKeyDown ("space") || Input.GetButtonDown("Fire1")) && storyPause == true)
+		else if (Input.GetKeyDown ("space") || Input.GetButtonDown("Fire1"))
 		{
 			uiObj.disableUI();
 		}
@@ -68,14 +68,17 @@ public class MasterStory : MonoBehaviour {
 
 	void OnLevelWasLoaded(int level)
 	{
+		GameObject uitemp = GameObject.Find ("UI");
+		if (uitemp != null) {
+			uiObj = uitemp.GetComponent<UIDisp>();
+		}
+
 		string name = Application.loadedLevelName;
 		if (name == "Apartment_Scene") {
 			currentStory = STORYTYPE.APARTMENT;
-			uiObj = Camera.main.GetComponentInChildren<UIDisp>();
 			apartmentFunc ();
 		} else if (name == "Office_Scene") {
 			currentStory = STORYTYPE.OFFICE;
-			uiObj = Camera.main.GetComponentInChildren<UIDisp>();
 			officeFunc ();
 		} else {
 			storyPause = true;

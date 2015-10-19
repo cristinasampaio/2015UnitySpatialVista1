@@ -7,10 +7,12 @@ public class abstractTutorial : MonoBehaviour {
 	GameObject target;
 	GameObject oldObject;
 	GameObject manager;
+	GameObject tutorialManager;
 
 	// Use this for initialization
 	void Start () {
 		manager = GameObject.Find ("GameMaster");
+		tutorialManager = GameObject.Find ("TutorialManager");
 		storedVector = gameObject.transform.position;
 	}
 	
@@ -88,7 +90,7 @@ public class abstractTutorial : MonoBehaviour {
 			}
 			else if (state == 9)
 			{
-				manager.GetComponent<MasterScript> ().setTimer (5.0f);
+				//manager.GetComponent<MasterScript> ().setTimer (5.0f);
 				target = GameObject.Find("x");
 				target.GetComponent<Renderer>().enabled = false;
 				target = GameObject.Find("table");
@@ -97,6 +99,7 @@ public class abstractTutorial : MonoBehaviour {
 				target.GetComponent<Renderer>().enabled = true;
 				target = GameObject.Find ("go");
 				target.GetComponent<Renderer>().enabled = true;
+				tutorialManager.GetComponent<TutorialControlScript>().Initiate();
 				Destroy(gameObject);
 			}
 
