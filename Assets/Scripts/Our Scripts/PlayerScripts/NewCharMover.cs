@@ -10,8 +10,8 @@ public class NewCharMover : MonoBehaviour {
 	//It might be worth just activating the script rather then moving it here, but we shall see.
 	public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
 	public RotationAxes axes = RotationAxes.MouseXAndY;
-	float sensitivityX = 5F;
-	float sensitivityY = 5F;
+	public float sensitivityX = 5F;
+	public float sensitivityY = 5F;
 	
 	public float minimumX = -360F;
 	public float maximumX = 360F;
@@ -44,6 +44,7 @@ public class NewCharMover : MonoBehaviour {
 	List<Shader> shaderList = new List<Shader>();
 
 	bool confidenceGUI = false;
+	UIDisp ui;
 
 	private Color normalColor;
 
@@ -62,6 +63,8 @@ public class NewCharMover : MonoBehaviour {
 		controllerConnected = GameObject.Find ("GameMaster").GetComponent<MasterScript> ().getGamePad ();
 		OculusConnected = GameObject.Find ("GameMaster").GetComponent<MasterScript> ().getVR ();
 		receiveState (GameObject.Find("GameMaster").GetComponent<MasterScript>().getState());
+
+		ui = GameObject.Find ("GameMaster").GetComponent<UIDisp> ();
 
 		//If you're wondering, this is because every scene has a different innate scale associated with it.
 		//A result of using pre-made scenes from different sources which did not adher to a standard scale.
@@ -87,12 +90,19 @@ public class NewCharMover : MonoBehaviour {
 	// 2. With Contorller
 	// 3. With Oculus
 	void Update () {
-		if (currentState == 2) {
-			if (confidenceGUI) {
+		if (currentState == 1) {
+			Movement();
+		}
+		else if (currentState == 2) {
+			if (!confidenceGUI) {
 				Movement();
 				highlightObjects();
 				objPickDrop();
 				pickedUpUpdate ();
+			}
+			else {
+				//Code for the confidence selector.
+				ConfidenceSelection();
 			}
 		}
 
@@ -103,41 +113,12 @@ public class NewCharMover : MonoBehaviour {
 			if (controllerConnected && OculusConnected) {
 				Oculus(); //Includes special controller layout for Oculus
 				transform.Rotate (0, rotateDirection * rotationSpeed * Time.deltaTime, 0);
-				float sign = 0.0f;
-				if( (sign = Input.GetAxis("RightStickVertical")) != 0) {
-					sign = -sign;
-					if (sign > 0.05f && dop < 6.0f * scale) {
-						dop += .02f;
-					}
-					else if (sign < -0.05f && dop > 3.0f * scale) {
-						dop -= .02f;
-					}
-				}
 			}
 			else if (controllerConnected && !OculusConnected) {
 				Controller();//Should be just controller support, might add keyboard to work here too.
-				if (pickedUp) {
-					if (Input.GetButton("RightBumper") && dop < 6.0f * scale) {
-						dop += .02f;
-					}
-					else if (Input.GetButton("LeftBumper") && dop > 3.0f * scale) {
-						dop -= .02f;
-					}
-				}
 			}
 			else {
 				MouseandKeyboard();
-				if (pickedUp) {
-					float sign = 0.0f;
-					if ((sign = Input.GetAxis("Mouse ScrollWheel")) != 0) {
-						if (sign > 0.05f && dop < 6.0f * scale) {
-							dop += .02f;
-						}
-						else if (sign < -0.05f && dop > 3.0f * scale) {
-							dop -= .02f;
-						}
-					}
-				}
 			}
 			
 		}
@@ -174,6 +155,19 @@ public class NewCharMover : MonoBehaviour {
 			
 			this.GetComponentInChildren<Camera>().transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
 		}
+
+		//Fine control for picked up objects.
+		if (pickedUp) {
+			float sign = 0.0f;
+			if ((sign = Input.GetAxis("Mouse ScrollWheel")) != 0) {
+				if (sign > 0.05f && dop < 6.0f * scale) {
+					dop += .02f;
+				}
+				else if (sign < -0.05f && dop > 3.0f * scale) {
+					dop -= .02f;
+				}
+			}
+		}
 	}
 
 	//This is for movement with controller.
@@ -182,9 +176,6 @@ public class NewCharMover : MonoBehaviour {
 		float Vertical = 0f;
 		Horizontal = Input.GetAxis ("LeftStickHorizontal");
 		Vertical = Input.GetAxis ("LeftStickVertical");
-
-		//This line is to check for random and unwanted offsets in controllers.
-		//Debug.Log ("Horizontal = " + Horizontal + " :  Vertical = " + Vertical);
 
 		moveDirection = new Vector3(Horizontal, 0, -Vertical);
 		moveDirection = transform.TransformDirection (moveDirection);
@@ -197,6 +188,16 @@ public class NewCharMover : MonoBehaviour {
 		
 		transform.localEulerAngles = new Vector3(0, rotationX, 0);
 		this.GetComponentInChildren<Camera>().transform.localEulerAngles = new Vector3(-rotationY, 0, 0);
+
+		//Fine control for picked up objects.
+		if (pickedUp) {
+			if (Input.GetButton("RightBumper") && dop < 6.0f * scale) {
+				dop += .02f;
+			}
+			else if (Input.GetButton("LeftBumper") && dop > 3.0f * scale) {
+				dop -= .02f;
+			}
+		}
 	}
 
 	//This is for Oculus Connected, it uses simpler controlls for keyboard/gamepad.
@@ -232,6 +233,18 @@ public class NewCharMover : MonoBehaviour {
 				
 			}
 		}
+
+		//Fine control for picked up objects.
+		float sign = 0.0f;
+		if( (sign = Input.GetAxis("RightStickVertical")) != 0) {
+			sign = -sign;
+			if (sign > 0.05f && dop < 6.0f * scale) {
+				dop += .02f;
+			}
+			else if (sign < -0.05f && dop > 3.0f * scale) {
+				dop -= .02f;
+			}
+		}
 	}
 
 
@@ -241,7 +254,6 @@ public class NewCharMover : MonoBehaviour {
 		RaycastHit hit1;
 		Ray ray = Camera.main.ScreenPointToRay (new Vector3 (Screen.width / 2, Screen.height / 2, 0));
 		if (Physics.Raycast (ray, out hit1, pickupDistance)) {
-			Debug.Log("THIS HERE AND NOW  " + Time.deltaTime);
 			if ((hit1.collider.gameObject.tag == "target" || hit1.collider.gameObject.tag == "nontarget") && pickedUp == false) {
 				if (obj == null) {
 					obj = hit1.collider.gameObject;
@@ -305,6 +317,12 @@ public class NewCharMover : MonoBehaviour {
 				Rigidbody body = obj.GetComponent<Rigidbody>();
 				body.useGravity = true;
 				body.velocity = new Vector3(0f, -.01f,0f);
+
+				if (obj.gameObject.tag == "target") {
+					confidenceGUI = true;
+					ui.showConf();
+				}
+
 				//can't access writecoordinates here due to boo script
 				obj = null;
 				//Reset distance of object (dop)
@@ -324,5 +342,26 @@ public class NewCharMover : MonoBehaviour {
 	void receiveState(int state)
 	{
 		currentState = state;
+	}
+
+	/* This is the simple version right now, select a number on the keyboard to choose your confidence.
+	 * A system with on screen boxes you can look at to choose your confidence (for the Oculus Rift)
+	 * should be added next. This system should use the already in place GUI system, just like here. */
+	void ConfidenceSelection()
+	{
+		if(Input.GetKeyDown(KeyCode.Backspace) || Input.GetButtonDown("Fire2")) {
+			confidenceGUI = false;
+		}
+		else {
+			for (int i = 1; i <= 8; i ++) {
+				if(Input.GetKeyDown("" + i)) {
+					float time = (float)GameObject.Find("GameMaster").GetComponent<MasterScript>().getTimer();
+					obj.GetComponent<WriteCoordinates>().saveCSV(i,time);
+					confidenceGUI = false;
+					obj.gameObject.tag = "Untagged";
+					obj = null;
+				}
+			}
+		}
 	}
 }

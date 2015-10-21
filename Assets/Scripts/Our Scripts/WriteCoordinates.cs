@@ -49,8 +49,8 @@ public class WriteCoordinates : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (p == true) {
-			if (gameObject.GetComponent<Rigidbody>().velocity == Vector3(0,0,0)) {
-				keeper.SetPos(gameObject.name, Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, gameObject.transform.localPosition.z));
+			if (gameObject.GetComponent<Rigidbody>().velocity == new Vector3(0,0,0)) {
+				keeper.SetPos(gameObject.name, new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, gameObject.transform.localPosition.z));
 				keeper.SetRot(gameObject.name, startRot);
 				storedVector = gameObject.transform.position;
 				p = false;
@@ -70,13 +70,13 @@ public class WriteCoordinates : MonoBehaviour {
 		this.endZ = transform.position.z;
 		this.confidence = conf;
 		string name = this.gameObject.name;
-		keeper.SetPos (name, Vector3 (self.endX, self.endY, self.endZ));
+		keeper.SetPos (name, new Vector3 ((float)this.endX, (float)this.endY, (float)this.endZ));
 		keeper.SetRot (name, gameObject.transform.localEulerAngles);
 		string filepath = "Data/data.csv";
 		string del = ",";
-		string output = "$name$del$startX$del$startY$del$startZ$del$endX$del$endY$del$endZ$del$confidence$del$time$del";
+		string output = name + del + startX + del + startY + startZ + del + endX + del + endY + del + endZ + del + confidence + time + del;
 		try {
-			using (System.IO.StreamWriter myfile = System.IO.StreamWriter(filepath, true)) {
+			using (System.IO.StreamWriter myfile = new System.IO.StreamWriter(filepath, true)) {
 				myfile.WriteLine(output);
 			}
 		}
@@ -89,7 +89,7 @@ public class WriteCoordinates : MonoBehaviour {
 		p = true;
 	}
 
-	void checkColliders() {
+	public void checkColliders() {
 		if (gameObject.GetComponent<Rigidbody>() == null) {
 			gameObject.AddComponent<Rigidbody>();
 			gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;

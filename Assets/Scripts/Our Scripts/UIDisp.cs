@@ -85,7 +85,7 @@ public class UIDisp : MonoBehaviour {
 	}
 	public void OnLevelWasLoaded(int id)
 	{
-		if (Application.loadedLevelName == "OFfice_Scene") {
+		if (Application.loadedLevelName == "Office_Scene") {
 			distx = 1f;
 			distz = 0f;
 			disty = 0f;
