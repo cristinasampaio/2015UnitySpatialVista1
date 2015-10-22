@@ -9,10 +9,10 @@ class AddScript (MonoBehaviour):
 
 	def Start ():
 		for obj in GameObject.FindGameObjectsWithTag('target'):
-			if obj.GetComponent[of WriteCoordinates]() == null:
-				obj.AddComponent[of WriteCoordinates]()
-				obj.GetComponent[of WriteCoordinates]().checkColliders()
+			if obj.GetComponent[of WriteCoordinatesOLD]() == null:
+				obj.AddComponent[of WriteCoordinatesOLD]()
+				obj.GetComponent[of WriteCoordinatesOLD]().checkColliders()
 		for obj in GameObject.FindGameObjectsWithTag('nontarget'):
-			if obj.GetComponent[of WriteCoordinates]() == null:
-				obj.AddComponent[of WriteCoordinates]()
-				obj.GetComponent[of WriteCoordinates]().checkColliders()
+			if obj.GetComponent[of WriteCoordinatesOLD]() == null:
+				obj.AddComponent[of WriteCoordinatesOLD]()
+				obj.GetComponent[of WriteCoordinatesOLD]().checkColliders()

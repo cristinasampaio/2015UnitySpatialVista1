@@ -128,7 +128,7 @@ class PlayerBehavior (MonoBehaviour):
 						if(Input.GetKeyDown("" + i)):
 							obj = currObject as GameObject
 							time = GameObject.Find("GameMaster").GetComponent[of MasterScript]().getTimer()
-							obj.GetComponent[of WriteCoordinates]().saveCSV(i,time)
+							obj.GetComponent[of WriteCoordinatesOLD]().saveCSV(i,time)
 							showConfidenceGui = false
 							numPlaced += 1 #This should show us when we've 
 							currObject.gameObject.tag = 'Untagged'
@@ -147,14 +147,14 @@ class PlayerBehavior (MonoBehaviour):
 								currObject.GetComponent[of Rigidbody]().useGravity = false
 								currObject.GetComponent[of Rigidbody]().constraints = RigidbodyConstraints.FreezeAll
 								currObject.GetComponent[of Rigidbody]().constraints &= ~RigidbodyConstraints.FreezePositionY
-								currObject.transform.localEulerAngles = currObject.GetComponent[of WriteCoordinates]().startRot
+								currObject.transform.localEulerAngles = currObject.GetComponent[of WriteCoordinatesOLD]().startRot
 					else:
 						hasObject = false
 						for col in currObject.GetComponents[of Collider]():
 							col.enabled = true
 						currObject.GetComponent[of Rigidbody]().useGravity = true
 						currObject.GetComponent[of Rigidbody]().velocity = Vector3(0,-.01,0)
-						currObject.gameObject.GetComponent[of WriteCoordinates]().positionUpdate()
+						currObject.gameObject.GetComponent[of WriteCoordinatesOLD]().positionUpdate()
 						if (currObject.gameObject.tag == 'target'):
 							showConfidenceGui = true
 						dop = default_dop

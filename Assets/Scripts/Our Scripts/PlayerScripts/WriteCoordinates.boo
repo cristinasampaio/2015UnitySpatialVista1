@@ -1,6 +1,6 @@
 ﻿import UnityEngine
 
-public class WriteCoordinates (MonoBehaviour): 
+public class WriteCoordinatesOLD (MonoBehaviour): 
 	#Basically if you see a Boo file, you can expect that it's gonna need to be rewritten.
 	#And since these are our earliest files, they tend to be the most messiest but also the most important.
 	#Seriously super important. This script is.

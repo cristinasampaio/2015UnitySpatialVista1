@@ -36,7 +36,10 @@ public class NewCharMover : MonoBehaviour {
 
 	//This stuff is more for general highlighting and pickup
 	float pickupDistance = 10.0f;
+	public float basedop = 10f;
 	float dop = 1.5f;
+	float upperdop;
+	float lowerdop;
 	bool pickedUp = false;
 	bool isHighlight = false;
 	GameObject obj = null;
@@ -76,10 +79,13 @@ public class NewCharMover : MonoBehaviour {
 		} else if (Application.loadedLevelName == "testingtutorial") {
 			scale = .4f;
 		} else {
-			scale = 1.0f;
+			scale = 2.0f;
 		}
 
 		pickupDistance *= scale;
+		dop = basedop;
+		upperdop = basedop + (basedop / 2);
+		lowerdop = basedop - (basedop / 2);
 
 		//TODO: Add Font Information/Variables
 	}
@@ -160,10 +166,10 @@ public class NewCharMover : MonoBehaviour {
 		if (pickedUp) {
 			float sign = 0.0f;
 			if ((sign = Input.GetAxis("Mouse ScrollWheel")) != 0) {
-				if (sign > 0.05f && dop < 6.0f * scale) {
+				if (sign > 0.05f && dop < upperdop) {
 					dop += .02f;
 				}
-				else if (sign < -0.05f && dop > 3.0f * scale) {
+				else if (sign < -0.05f && dop > lowerdop) {
 					dop -= .02f;
 				}
 			}
@@ -191,10 +197,10 @@ public class NewCharMover : MonoBehaviour {
 
 		//Fine control for picked up objects.
 		if (pickedUp) {
-			if (Input.GetButton("RightBumper") && dop < 6.0f * scale) {
+			if (Input.GetButton("RightBumper") && dop < upperdop) {
 				dop += .02f;
 			}
-			else if (Input.GetButton("LeftBumper") && dop > 3.0f * scale) {
+			else if (Input.GetButton("LeftBumper") && dop > lowerdop) {
 				dop -= .02f;
 			}
 		}
@@ -238,10 +244,10 @@ public class NewCharMover : MonoBehaviour {
 		float sign = 0.0f;
 		if( (sign = Input.GetAxis("RightStickVertical")) != 0) {
 			sign = -sign;
-			if (sign > 0.05f && dop < 6.0f * scale) {
+			if (sign > 0.05f && dop < upperdop) {
 				dop += .02f;
 			}
-			else if (sign < -0.05f && dop > 3.0f * scale) {
+			else if (sign < -0.05f && dop > lowerdop) {
 				dop -= .02f;
 			}
 		}
@@ -301,6 +307,8 @@ public class NewCharMover : MonoBehaviour {
 					mat.shader = shaderList [0];
 					shaderList.RemoveAt (0);
 				}
+
+				obj.GetComponent<WriteCoordinates>().restoreRot();
 				Rigidbody body = obj.GetComponent<Rigidbody>();
 				body.useGravity = false;
 				body.constraints = RigidbodyConstraints.FreezeAll;
@@ -319,14 +327,15 @@ public class NewCharMover : MonoBehaviour {
 				body.velocity = new Vector3(0f, -.01f,0f);
 
 				if (obj.gameObject.tag == "target") {
-					confidenceGUI = true;
-					ui.showConf();
+					//confidenceGUI = true;
+					//ui.showConf();
 				}
 
 				//can't access writecoordinates here due to boo script
+				obj.GetComponent<WriteCoordinates>().positionUpdate();
 				obj = null;
 				//Reset distance of object (dop)
-				dop = 1.5f;
+				dop = basedop;
 			}
 		}
 	}
