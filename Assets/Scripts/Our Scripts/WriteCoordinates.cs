@@ -31,6 +31,9 @@ public class WriteCoordinates : MonoBehaviour {
 		this.startRot = transform.localEulerAngles;
 		gameObject.layer = 8;
 
+		storedVector = gameObject.transform.position;
+		storedRot = gameObject.transform.localEulerAngles;
+
 		checkColliders ();
 
 		gameObject.GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezeAll;
@@ -47,7 +50,7 @@ public class WriteCoordinates : MonoBehaviour {
 				gameObject.transform.localEulerAngles = keeper.ReturnRot(gameObject.name);
 			}
 			catch {
-				storedVector = gameObject.transform.position;
+				//much nothing
 			}
 		}
 	}

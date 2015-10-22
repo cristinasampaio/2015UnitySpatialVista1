@@ -100,6 +100,7 @@ public class abstractTutorial : MonoBehaviour {
 				target = GameObject.Find ("go");
 				target.GetComponent<Renderer>().enabled = true;
 				tutorialManager.GetComponent<TutorialControlScript>().Initiate();
+				GameObject.Find("UI").GetComponent<UIDisp>().sendTextToUi("Good job! Now head to opening in the wall to the next part of the tutorial, or proceed through the elevator to start.");
 				Destroy(gameObject);
 			}
 

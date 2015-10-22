@@ -45,7 +45,7 @@ public class TutorialControlScript : MonoBehaviour {
 		placedObj = false;
 	}
 
-	void placeObj()
+	public void placeObj()
 	{
 		if (layer1.Count > 0) {
 			newDelegate = layer1 [0];
@@ -60,5 +60,6 @@ public class TutorialControlScript : MonoBehaviour {
 		{
 			//tutorial is ogre
 		}
+		id--;
 	}
 }

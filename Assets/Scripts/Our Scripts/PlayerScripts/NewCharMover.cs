@@ -307,8 +307,8 @@ public class NewCharMover : MonoBehaviour {
 					mat.shader = shaderList [0];
 					shaderList.RemoveAt (0);
 				}
-
-				obj.GetComponent<WriteCoordinates>().restoreRot();
+				if (obj.GetComponent<WriteCoordinates>() != null)
+					obj.GetComponent<WriteCoordinates>().restoreRot();
 				Rigidbody body = obj.GetComponent<Rigidbody>();
 				body.useGravity = false;
 				body.constraints = RigidbodyConstraints.FreezeAll;
@@ -326,14 +326,19 @@ public class NewCharMover : MonoBehaviour {
 				body.useGravity = true;
 				body.velocity = new Vector3(0f, -.01f,0f);
 
+				if (obj.GetComponent<WriteCoordinates>() != null)
+					obj.GetComponent<WriteCoordinates>().positionUpdate();
+
 				if (obj.gameObject.tag == "target") {
 					confidenceGUI = true;
 					ui.showConf();
 				}
+				else
+				{
+					obj = null;
+				}
 
 				//can't access writecoordinates here due to boo script
-				obj.GetComponent<WriteCoordinates>().positionUpdate();
-				obj = null;
 				//Reset distance of object (dop)
 				dop = basedop;
 			}
@@ -361,6 +366,7 @@ public class NewCharMover : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Backspace) || Input.GetButtonDown("Fire2")) {
 			confidenceGUI = false;
 			ui.disableConf();
+			obj = null;
 		}
 		else {
 			for (int i = 1; i <= 8; i ++) {
@@ -368,6 +374,7 @@ public class NewCharMover : MonoBehaviour {
 					float time = (float)GameObject.Find("GameMaster").GetComponent<MasterScript>().getTimer();
 					obj.GetComponent<WriteCoordinates>().saveCSV(i,time);
 					confidenceGUI = false;
+					ui.disableConf();
 					obj.gameObject.tag = "Untagged";
 					obj = null;
 				}
