@@ -67,7 +67,7 @@ public class NewCharMover : MonoBehaviour {
 		OculusConnected = GameObject.Find ("GameMaster").GetComponent<MasterScript> ().getVR ();
 		receiveState (GameObject.Find("GameMaster").GetComponent<MasterScript>().getState());
 
-		ui = GameObject.Find ("GameMaster").GetComponent<UIDisp> ();
+		ui = GameObject.Find ("UI").GetComponent<UIDisp> ();
 
 		//If you're wondering, this is because every scene has a different innate scale associated with it.
 		//A result of using pre-made scenes from different sources which did not adher to a standard scale.
@@ -100,8 +100,8 @@ public class NewCharMover : MonoBehaviour {
 			Movement();
 		}
 		else if (currentState == 2) {
+			Movement();
 			if (!confidenceGUI) {
-				Movement();
 				highlightObjects();
 				objPickDrop();
 				pickedUpUpdate ();
@@ -327,8 +327,8 @@ public class NewCharMover : MonoBehaviour {
 				body.velocity = new Vector3(0f, -.01f,0f);
 
 				if (obj.gameObject.tag == "target") {
-					//confidenceGUI = true;
-					//ui.showConf();
+					confidenceGUI = true;
+					ui.showConf();
 				}
 
 				//can't access writecoordinates here due to boo script
@@ -360,6 +360,7 @@ public class NewCharMover : MonoBehaviour {
 	{
 		if(Input.GetKeyDown(KeyCode.Backspace) || Input.GetButtonDown("Fire2")) {
 			confidenceGUI = false;
+			ui.disableConf();
 		}
 		else {
 			for (int i = 1; i <= 8; i ++) {

@@ -60,7 +60,7 @@ public class MasterStory : MonoBehaviour {
 		} 
 		else if (Input.GetKeyDown ("space") || Input.GetButtonDown("Fire1"))
 		{
-			uiObj.disableUI();
+			uiObj.disableText();
 		}
 
 	

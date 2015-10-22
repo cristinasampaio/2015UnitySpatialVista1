@@ -83,6 +83,16 @@ public class UIDisp : MonoBehaviour {
 		//shell function
 		//shows the confidence interval panel with potentially name of the object
 	}
+	public void disableText()
+	{
+		tpanel.alpha = 0;
+		tdisp = false;
+	}
+	public void disableConf()
+	{
+		cpanel.alpha = 0;
+		cdisp = false;
+	}
 	public void OnLevelWasLoaded(int id)
 	{
 		if (Application.loadedLevelName == "Office_Scene") {
