@@ -59,6 +59,7 @@ public class TutorialControlScript : MonoBehaviour {
 		else
 		{
 			//tutorial is ogre
+			//GameObject.Find("GameMaster").GetComponent<MasterScript>().canOpen = true;
 		}
 		id--;
 	}

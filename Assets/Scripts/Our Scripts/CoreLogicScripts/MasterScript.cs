@@ -58,7 +58,7 @@ public class MasterScript : MonoBehaviour {
 
 		//First add the testFloors
 		testFloors.Add ("Office_Scene");
-		testFloors.Add ("Apartment01_2");
+		testFloors.Add ("Apartment_Scene");
 		//testFloors.Add ("");
 		testFloorsRem = testFloors.Count;
 

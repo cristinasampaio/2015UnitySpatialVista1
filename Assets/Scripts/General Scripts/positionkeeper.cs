@@ -70,7 +70,7 @@ public static class keeper {
 		officeRot.Add ("folders", new Vector3(12.78f, -74.62f, 185.80f));
 
 		//All apartment Positions
-		apartmentPos.Add ("loveseat", new Vector3 (-3.3587f, -3.066f, 2.1599f));
+		apartmentPos.Add ("loveseat", new Vector3 (3.3587f, -3.066f, 2.1599f));
 		apartmentPos.Add ("plateundertv", new Vector3 (0.088f, -2.766f, -0.092f));
 		apartmentPos.Add ("smallbook", new Vector3 (-0.179f, -0.16f, 2.362f));
 		apartmentPos.Add ("sidetable", new Vector3 (0.3603f, -3.104f, 2.3413f));

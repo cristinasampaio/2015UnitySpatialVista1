@@ -39,7 +39,7 @@ class Login (MonoBehaviour):
 
 	def OnMouseDown() as void:
 		saveCSV()
-		Application.LoadLevel("testingtutorial")
+		Application.LoadLevel("testingtutorialv2")
 					
 	//This runs when first playing
 	def saveCSV ():
