@@ -31,6 +31,7 @@ public class NewCharMover : MonoBehaviour {
 	private float scale;
 	private float rotation;
 	CharacterController controller;
+	Vector3 screenvector;
 
 	int currentState = 0;
 
@@ -57,6 +58,7 @@ public class NewCharMover : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		screenvector = new Vector3 (Screen.width / 2, Screen.height / 2, 0);
 		controller = GetComponent<CharacterController>();
 		controller.enabled = true;
 		//Shader stuff
@@ -115,7 +117,7 @@ public class NewCharMover : MonoBehaviour {
 	}
 
 	void Movement() {
-		if (controller.enabled = true) {
+		if (controller.enabled == true) {
 			if (controllerConnected && OculusConnected) {
 				Oculus(); //Includes special controller layout for Oculus
 				transform.Rotate (0, rotateDirection * rotationSpeed * Time.deltaTime, 0);
@@ -134,11 +136,9 @@ public class NewCharMover : MonoBehaviour {
 
 	//This is the movement for Mouse and Keyboard.
 	void MouseandKeyboard() {
-		float Horizontal = Input.GetAxis ("Horizontal");
-		float Vertical = Input.GetAxis ("Vertical");
-		
-		moveDirection = new Vector3(Horizontal, 0, Vertical);
-		moveDirection = transform.TransformDirection (moveDirection);
+		float Horizontal = Input.GetAxis ("Horizontal") * Time.deltaTime * speed;
+		float Vertical = Input.GetAxis ("Vertical") * Time.deltaTime * speed;
+		moveDirection = transform.TransformDirection (Horizontal, 0, Vertical);
 
 		if (axes == RotationAxes.MouseXAndY)
 		{
@@ -180,11 +180,10 @@ public class NewCharMover : MonoBehaviour {
 	void Controller() {
 		float Horizontal = 0f;
 		float Vertical = 0f;
-		Horizontal = Input.GetAxis ("LeftStickHorizontal");
-		Vertical = Input.GetAxis ("LeftStickVertical");
+		Horizontal = Input.GetAxis ("LeftStickHorizontal") * Time.deltaTime * speed;
+		Vertical = Input.GetAxis ("LeftStickVertical") * Time.deltaTime * speed;
 
-		moveDirection = new Vector3(Horizontal, 0, -Vertical);
-		moveDirection = transform.TransformDirection (moveDirection);
+		moveDirection = transform.TransformDirection (Horizontal, 0, -Vertical);
 
 		float rotationX = 0.0f;
 		rotationX = transform.localEulerAngles.y + Input.GetAxis("RightStickHorizontal") * sensitivityX;
@@ -211,8 +210,7 @@ public class NewCharMover : MonoBehaviour {
 		if (controller.isGrounded) {
 			float Horizontal = Input.GetAxis ("Horizontal");
 			float Vertical = Input.GetAxis ("Vertical");
-			moveDirection = new Vector3(0, 0, Vertical);
-			moveDirection = transform.TransformDirection (moveDirection);
+			moveDirection = transform.TransformDirection (0, 0, Vertical);
 			rotateDirection = Horizontal;
 			
 			//float rotation = Vector3.Angle (Camera.main.transform.forward, controller.transform.forward);
@@ -258,7 +256,7 @@ public class NewCharMover : MonoBehaviour {
 	void highlightObjects()
 	{
 		RaycastHit hit1;
-		Ray ray = Camera.main.ScreenPointToRay (new Vector3 (Screen.width / 2, Screen.height / 2, 0));
+		Ray ray = Camera.main.ScreenPointToRay (screenvector);
 		if (Physics.Raycast (ray, out hit1, pickupDistance)) {
 			if ((hit1.collider.gameObject.tag == "target" || hit1.collider.gameObject.tag == "nontarget") && pickedUp == false) {
 				if (obj == null) {

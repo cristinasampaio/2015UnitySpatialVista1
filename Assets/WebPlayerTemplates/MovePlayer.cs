@@ -43,7 +43,7 @@ public class MovePlayer : MonoBehaviour {
 	void Update() {
 		CharacterController controller = GetComponent<CharacterController> ();
 		//Check if the character is on the ground, for jumping if we ever want that.
-		if (controller.enabled = true) {
+		if (controller.enabled == true) {
 	
 			if (controller.isGrounded) {
 
@@ -55,7 +55,7 @@ public class MovePlayer : MonoBehaviour {
 				Vector3 Go = new Vector3 (0, 0, Vertical);
 				moveDirection = Go;
 				
-				float slope = 0.0f;
+				//float slope = 0.0f;
 				//Check size of character for the 4th parameter
 				/*if(controller.Raycast(transform.position, Vector3.down, hit, 10)) {
 					slope = hit.normal;

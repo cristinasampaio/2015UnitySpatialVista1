@@ -10,11 +10,7 @@ public class MasterScript : MonoBehaviour {
 	 It's because this script needs to run first above all others. That's mainly why.
 	 Also as a note this is another important script, but thankfully was more recently written.
 	 -Jacob*/
-
-	string scene = "";
-	bool flag = false;
-	int test = 0;
-
+	public bool test = true;
 	//All public variables
 	public bool isSet = false;
 	public bool spawnInElevator = false;
@@ -47,6 +43,9 @@ public class MasterScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Application.targetFrameRate = 30;
+		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
 		GameObject.Find("Player").SendMessage("receiveState", state);
 		string[] names = Input.GetJoystickNames ();
 		if (names.Length > 0) {
@@ -258,5 +257,7 @@ public class MasterScript : MonoBehaviour {
 	public void OnLevelWasLoaded(int level)
 	{
 		GameObject.Find("Player").SendMessage("receiveState", state);
+		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
 	}
 }

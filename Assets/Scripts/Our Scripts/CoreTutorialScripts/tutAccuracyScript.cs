@@ -12,9 +12,9 @@ public class tutAccuracyScript : MonoBehaviour {
 	private GameObject tutorialManager;
 	private UIDisp ui;
 
-	private bool xb = false;
-	private bool yb = false;
-	private bool zb = false;
+	//private bool xb = false;
+	//private bool yb = false;
+	//private bool zb = false;
 	private bool isActive = false;
 	private bool check = false;
 	bool firstdrop = false;
@@ -70,9 +70,9 @@ public class tutAccuracyScript : MonoBehaviour {
 					firstdrop = false;
 				}
 				check = true;
-				xb = false;
-				yb = false;
-				zb = false;
+			//	xb = false;
+			//	yb = false;
+			//	zb = false;
 			}
 			else if (!thisbod.IsSleeping() && check == true)
 			{

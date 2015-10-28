@@ -90,7 +90,7 @@ public class MasterStory : MonoBehaviour {
 
 	void apartmentFunc()
 	{
-		if (visitApartment = false) {
+		if (visitApartment == false) {
 			storyState = 0;
 			visitApartment = true;
 		}
@@ -112,7 +112,7 @@ public class MasterStory : MonoBehaviour {
 
 	void officeFunc()
 	{
-		if (visitOffice = false) {
+		if (visitOffice == false) {
 			storyState = 0;
 			visitApartment = true;
 		}

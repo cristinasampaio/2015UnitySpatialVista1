@@ -30,10 +30,6 @@ public class UIDisp : MonoBehaviour {
 
 		tbox = tpanel.GetComponentInChildren<Text> ();
 
-		if (!VRDevice.isPresent) {
-			RectTransform temp = tpanel.GetComponent<RectTransform>();
-
-		}
 	
 	}
 
@@ -55,7 +51,7 @@ public class UIDisp : MonoBehaviour {
 	{
 		//shell function
 		//will disable all UI elements
-		if (isOn = true) {
+		if (isOn == true) {
 			foreach (CanvasGroup group in cgroups) {
 				group.alpha = 0;
 			}

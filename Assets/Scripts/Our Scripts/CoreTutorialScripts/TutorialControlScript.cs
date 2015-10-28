@@ -9,8 +9,6 @@ public class TutorialControlScript : MonoBehaviour {
 	public delegate void move();
 	move newDelegate;
 
-	public static event move moveEvent;
-
 	public List<move> layer1 = new List<move>();
 	public List<move> layer2 = new List<move>();
 	
@@ -59,7 +57,8 @@ public class TutorialControlScript : MonoBehaviour {
 		else
 		{
 			//tutorial is ogre
-			//GameObject.Find("GameMaster").GetComponent<MasterScript>().canOpen = true;
+			GameObject.Find("GameMaster").GetComponent<MasterScript>().canOpen = true;
+			GameObject.Find("UI").GetComponent<UIDisp>().sendTextToUi("Good job! The tutorial is now complete. Please proceed to the elevator when ready.");
 		}
 		id--;
 	}

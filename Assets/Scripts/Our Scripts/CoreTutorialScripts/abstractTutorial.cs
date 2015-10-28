@@ -52,7 +52,7 @@ public class abstractTutorial : MonoBehaviour {
 			{
 				storedVector = new Vector3(-4.24359f, 14.06308f, -25.0599f);
 				gameObject.transform.position = storedVector;
-				target = GameObject.Find("table");
+				target = GameObject.Find("tabletut");
 				oldObject = GameObject.Find("abstractTable");
 
 				oldObject.GetComponent<Renderer>().enabled = false;
@@ -93,7 +93,7 @@ public class abstractTutorial : MonoBehaviour {
 				//manager.GetComponent<MasterScript> ().setTimer (5.0f);
 				target = GameObject.Find("x");
 				target.GetComponent<Renderer>().enabled = false;
-				target = GameObject.Find("table");
+				target = GameObject.Find("tabletut");
 				target.GetComponent<Renderer>().enabled = false;
 				target = GameObject.Find("stop");
 				target.GetComponent<Renderer>().enabled = true;
