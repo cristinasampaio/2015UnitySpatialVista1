@@ -1,0 +1,8 @@
+"You are an intern in a company called Logale & Jabran and today is your first morning at your job."
+"Your phone is ringing"
+"Welcome! Thank you so much for coming in on such short notice. Please take a tour of the office before all employees arrive: there are four separate rooms for you to explore. Please look around everywhere and examine all small objects."
+"Our former intern was dismissed yesterday, and he usually cleaned up the desks and tables at the end of the day, so please don't mind if the office is not completely in order. You will be covering some of his former tasks so please make sure to look EVERYWHERE: behind, above, and under desks, counters, couches, chairs, etc. Pay very close attention to where every single object is."
+"Now that you are finished with the office tour, I think you should also visit the office above us, as we collaborate with them in a number of projects. Please go to the elevator to head up there."
+"We need you back in the office immediately. Please hurry back."
+"Wow, what a crazy morning. Our last intern came into the office while you were gone. He didn't handle his dismissal very well, and now I'm at the police station reporting the incident. Please, before everyone gets in, go around to all of the rooms and put everything back in place. There will be a very important meeting this morning."
+"Please set up everything exactly the same as it was. Your boss is very particular about the way the office is organized."

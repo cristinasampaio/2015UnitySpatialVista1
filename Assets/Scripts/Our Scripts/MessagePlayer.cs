@@ -10,6 +10,10 @@ using System.Collections;
  * 
  */
 
+
+//Deprecated code. Not used anymore after development of a new tutorial.
+//Also kinda rude comments above.
+//Left just for the sake of history.
 public class MessagePlayer : MonoBehaviour {
 
 	//tracks players progress through tutorial
@@ -25,7 +29,7 @@ public class MessagePlayer : MonoBehaviour {
 	//highlighting shaders
 	Shader highlightShader;
 	Shader normalShader;
-	Shader tempShader;
+	//Shader tempShader;
 	
 	//vending machine object
 	public static int coCounter = 0;
@@ -67,7 +71,7 @@ public class MessagePlayer : MonoBehaviour {
 		/* highlight vending machine */
 		highlightShader = Shader.Find("Self-Illumin");
 		normalShader = Shader.Find("Diffuse");
-		tempShader = Shader.Find("Diffuse");
+		//tempShader = Shader.Find("Diffuse");
 		lookVector = new Vector3(Screen.width/2, Screen.height/2, 0);
 		board = GameObject.Find("Teachers_Board");
 		textbook = GameObject.Find("Book");

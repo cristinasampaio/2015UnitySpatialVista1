@@ -62,8 +62,8 @@ public class SimpleElevator: MonoBehaviour {
 		elevator.position = hallFrame.transform.position;
 	
 		//Decide if the player is still in the elevator or not
-		if(sn.getSpawnPoint() == 1){
-			Debug.Log(Application.loadedLevelName);
+		if(sn.getSpawnPoint()){
+			//Debug.Log(Application.loadedLevelName);
 			player.transform.position = gameObject.transform.position;
 			player.transform.localEulerAngles = transform.localEulerAngles;
 			player.transform.Translate(0,1*this.transform.localScale.y,0);
@@ -84,7 +84,7 @@ public class SimpleElevator: MonoBehaviour {
 		if (sn.canExit == false) {
 			canExit = false;
 			hallFrame.GetComponent<Collider>().isTrigger = false;
-			Debug.Log("hallframe should be false");
+			//Debug.Log("hallframe should be false");
 			manager.GetComponent<MasterScript>().setTimer(10.0f);
 
 		}
@@ -115,7 +115,7 @@ public class SimpleElevator: MonoBehaviour {
 	//Opens both the elevator and the hallframe door
 	void OpenDoor(){
 		GameObject.Find ("elevBlocker").GetComponent<BoxCollider> ().enabled = false;
-		Debug.Log ("got here");
+		//Debug.Log ("got here");
 		GetComponent<AudioSource>().PlayOneShot(elevatorOpen);
 		transform.GetComponent<Animation>().clip = openAnim;
 		transform.GetComponent<Animation>().Play();
@@ -133,7 +133,11 @@ public class SimpleElevator: MonoBehaviour {
 	}
 	//Logic to open/close the door when the player enters.
 	void OnTriggerEnter(Collider other) {
-		Debug.Log (isSet);
+		if (other.gameObject.tag != "Player") 
+		{
+						return;
+		}
+		//Debug.Log (isSet);
 		if (isSet == 0 && (Time.timeSinceLevelLoad > 1.0)) { 
 			inElevator = true;
 			CloseDoor ();
@@ -143,16 +147,21 @@ public class SimpleElevator: MonoBehaviour {
 			OpenDoor ();
 		}else
 		{
-			Debug.Log("test");
+			//Debug.Log("test");
 			manager.GetComponent<MasterScript>().playElevatorMusic();
 			CloseDoor ();
 			inElevator = true;
 			isSet =0;
-			Debug.Log(isSet);
+			//Debug.Log(isSet);
 		}
 	}
 	//Logic to close the door when the player exits the elevator
 	void OnTriggerExit(Collider other) {
+		if (other.gameObject.tag != "Player") 
+		{
+			return;
+		}
+
 		inElevator = false;
 		CloseDoor ();
 		GameObject.Find ("elevBlocker").GetComponent<BoxCollider> ().enabled = true;
@@ -162,7 +171,7 @@ public class SimpleElevator: MonoBehaviour {
 	void Update () {
 		//if in the elevator and the timer flag goes off, then we can start to load the next floor
 		if (inElevator && isSet == 0) {
-			Debug.Log("dasfsd");
+			//Debug.Log("dasfsd");
 			manager.GetComponent<MasterScript>().goNextFloor();
 			isSet = 1;
 		}
@@ -173,7 +182,7 @@ public class SimpleElevator: MonoBehaviour {
 		//} 
 		if (manager.GetComponent<MasterScript>().getCanOpen()) {
 			if(inElevator == false && a == true){
-				Debug.Log("Open Door");
+				//Debug.Log("Open Door");
 				OpenDoor ();
 				a = false;
 			}else if(inElevator == true && b == true){
