@@ -11,10 +11,12 @@ public class UIDisp : MonoBehaviour {
 	public float distz = 1.2f;
 	public float distx = 0f;
 	public float disty = 0f;
-	bool tdisp = false;
-	bool cdisp = false;
+	bool textDisp = false;
+	bool confDisp = false;
 	bool isOn = false;
+	bool moveToPosition = false;
 	Vector3 offset;
+	float valOffset = 1f;
 
 	// Use this for initialization
 	void Awake () {
@@ -35,16 +37,23 @@ public class UIDisp : MonoBehaviour {
 
 	public void Update()
 	{
-		this.GetComponent<RectTransform> ().position = Camera.main.transform.position + offset;
+		//this.GetComponent<RectTransform> ().position = Camera.main.transform.position + offset;
+
+		if (moveToPosition == true) {
+			this.GetComponent<RectTransform>().position = Camera.main.transform.position + Camera.main.transform.forward*valOffset;
+			transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
+			moveToPosition = false;
+		}
 	}
 
 	public void sendTextToUi(string text)
 	{
 		//shell function
 		//will receive text from anywhere else and pass it to the text panel
-		if (tdisp == false)
+		if (textDisp == false)
 			enableText ();
 		tbox.text = text;
+		moveToPosition = true;
 	}
 
 	public void disableUI()
@@ -56,15 +65,15 @@ public class UIDisp : MonoBehaviour {
 				group.alpha = 0;
 			}
 			isOn = false;
-			tdisp = false;
-			cdisp = false;
+			textDisp = false;
+			confDisp = false;
 		}
 	}
 
 	public void enableText()
 	{
 		tpanel.alpha = 1;
-		tdisp = true;
+		textDisp = true;
 	}
 
 	public void showConf()
@@ -72,7 +81,9 @@ public class UIDisp : MonoBehaviour {
 		//shell function
 		//shows the confidence interval panel
 		cpanel.alpha = 1;
+		confDisp = true;
 		isOn = true;
+		moveToPosition = true;
 	}
 	public void showConf(string name)
 	{
@@ -82,12 +93,12 @@ public class UIDisp : MonoBehaviour {
 	public void disableText()
 	{
 		tpanel.alpha = 0;
-		tdisp = false;
+		textDisp = false;
 	}
 	public void disableConf()
 	{
 		cpanel.alpha = 0;
-		cdisp = false;
+		confDisp = false;
 	}
 	public void OnLevelWasLoaded(int id)
 	{
@@ -95,11 +106,13 @@ public class UIDisp : MonoBehaviour {
 			distx = 1f;
 			distz = 0f;
 			disty = 0f;
+			valOffset = 1f;
 			offset = new Vector3(distx, disty, distz);
 		} else if (Application.loadedLevelName == "Apartment_Scene") {
 			distx = -1f;
 			disty = 0f;
 			distz = 0f;
+			valOffset = -1f;
 			offset = new Vector3(distx, disty, distz);
 		}
 	}
